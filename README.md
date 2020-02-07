@@ -19,4 +19,4 @@ Description
 ***
 ER-model
 --------------------------
-![](https://user-images.githubusercontent.com/2338967/74024067-16939b00-49b2-11ea-9dd2-30338fb6e224.png)
+![](https://user-images.githubusercontent.com/2338967/74025522-2eb8e980-49b5-11ea-9111-2765273110fa.png)
