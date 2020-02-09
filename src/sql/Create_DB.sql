@@ -1,6 +1,6 @@
 BEGIN;
 
-CREATE TABLE User
+CREATE TABLE Users
 (
     Id            serial PRIMARY KEY,
     Email         text NOT NULL,
@@ -14,7 +14,7 @@ CREATE TABLE User
 CREATE TABLE Client
 (
     Id            int PRIMARY KEY
-        REFERENCES User (Id)
+        REFERENCES Users (Id)
             ON DELETE CASCADE
             ON UPDATE CASCADE,
     Pass_id       int
@@ -28,19 +28,30 @@ CREATE TABLE Client
 CREATE TABLE Admin
 (
     Id int PRIMARY KEY
-        REFERENCES User (Id)
+        REFERENCES Users (Id)
             ON DELETE CASCADE
             ON UPDATE CASCADE
 );
 ----------------------------------------
-CREATE TABLE Car
-(
-    Id int PRIMARY KEY
+CREATE TABLE Car_model (
+    Id int PRIMARY KEY,
+    Brand_name text NOT NULL,
+    Model_name text NOT NULL,
+    Price_per_hour double precision NOT NULL
 );
 
-CREATE TABLE Car_Model
-(
-    Id int PRIMARY KEY
+CREATE TYPE car_status as ENUM ('broken','taken','free');
+
+CREATE TABLE Car (
+    Id int PRIMARY KEY,
+    Model_id int
+        REFERENCES Car_model(Id)
+        ON DELETE NO ACTION
+        ON UPDATE NO ACTION,
+    Color text NOT NULL,
+    REG_number text NOT NULL,
+    VIN_number text NOT NULL,
+    Status car_status NOT NULL
 );
 ----------------------------------------
 CREATE TYPE e_status_order AS ENUM (
