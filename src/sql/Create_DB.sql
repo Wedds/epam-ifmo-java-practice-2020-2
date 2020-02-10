@@ -1,37 +1,27 @@
 BEGIN;
 
-CREATE TABLE Users
-(
-    Id            serial PRIMARY KEY,
-    Email         text NOT NULL,
+CREATE TYPE e_role_users AS ENUM (
+    'client',
+    'admin'
+);
+
+CREATE TABLE Users (
+    Id serial PRIMARY KEY,
+    Email text NOT NULL,
     Password_hash text NOT NULL,
-    Birth_date    date NOT NULL,
-    Signup_date   date NOT NULL
-);
-
-
-
-CREATE TABLE Client
-(
-    Id            int PRIMARY KEY
-        REFERENCES Users (Id)
-            ON DELETE CASCADE
-            ON UPDATE CASCADE,
-    Pass_id       int
-        REFERENCES Passport (Id)
-            ON DELETE NO ACTION
-            ON UPDATE NO ACTION,
+    Role e_role_users NOT NULL,
+    Name text NOT NULL,
+    Birth_date  date NOT NULL,
+    Signup_date date NOT NULL,
+    Pass_id int
+        REFERENCES Passport(Id)
+        ON DELETE NO ACTION
+        ON UPDATE NO ACTION,
     Contact_phone text,
-    Address       text
+    Address text,
+    Is_blocked boolean NOT NULL
 );
 
-CREATE TABLE Admin
-(
-    Id int PRIMARY KEY
-        REFERENCES Users (Id)
-            ON DELETE CASCADE
-            ON UPDATE CASCADE
-);
 ----------------------------------------
 CREATE TABLE Car_model (
     Id int PRIMARY KEY,
