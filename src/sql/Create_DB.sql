@@ -92,14 +92,33 @@ CREATE TABLE Invoice
     Status       e_status_invoice NOT NULL
 );
 ----------------------------------------
+CREATE TYPE damage_status AS ENUM (
+    'fixed',
+    'not fixed',
+    'in process');
 CREATE TABLE Passport
 (
-    Id int PRIMARY KEY
+    Id int PRIMARY KEY,
+    Issue_country text NOT NULL ,
+    Issuer text ,
+    Issue_date date NOT NULL ,
+    Expiration_date date NOT NULL ,
+    Serial_number int NOT NULL
 );
 
 CREATE TABLE Car_damage
 (
-    Id int PRIMARY KEY
+    Id int PRIMARY KEY,
+    Order_id int
+        REFERENCES Ord (Id)
+            ON DELETE NO ACTION
+            ON UPDATE NO ACTION,
+    Type text,
+    Description text NOT NULL,
+    Date date NOT NULL,
+    Severity int NOT NULL ,
+    Repair_cost int NOT NULL,
+    Status text NOT NULL
 );
 
 
