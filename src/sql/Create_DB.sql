@@ -10,7 +10,7 @@ CREATE TABLE Passport (
     Issue_country text NOT NULL,
     Issuer text,
     Issue_date date NOT NULL,
-    Expiration_date date NOT NULL,
+    Expiration_date date,
     Serial_number text NOT NULL
 );
 
