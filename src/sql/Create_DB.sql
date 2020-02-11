@@ -25,7 +25,7 @@ CREATE TABLE Users (
     Pass_id int
         REFERENCES Passport(Id)
         ON DELETE NO ACTION
-        ON UPDATE NO ACTION,
+        ON UPDATE CASCADE,
     Contact_phone text,
     Address text,
     Is_blocked boolean NOT NULL,
