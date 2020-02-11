@@ -10,7 +10,7 @@
 
     <servlet>
         <servlet-name>HelloServlet</servlet-name>
-        <servlet-class>HelloServlet</servlet-class>
+        <servlet-class>com.ifmo.com.ifmo.epampractice.servlet.HelloServlet</servlet-class>
     </servlet>
 
     <servlet-mapping>

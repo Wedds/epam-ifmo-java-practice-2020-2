@@ -1,4 +1,5 @@
-import javax.servlet.ServletException;
+package com.ifmo.epampractice.servlet;
+
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -13,7 +14,9 @@ public class HelloServlet extends HttpServlet {
 
         response.setContentType("text/html");
         try (PrintWriter writer = response.getWriter()) {
-            writer.println("<h2>Hello from HelloServlet</h2>");
+            writer.println("<h2>Hello from com.ifmo.com.ifmo.epampractice.servlet.HelloServlet</h2>");
+        } catch (Exception e){
+            e.printStackTrace();
         }
     }
 }
