@@ -36,7 +36,7 @@ CREATE TABLE Users (
     Driving_license_id int
         REFERENCES Driving_license(Id)
         ON DELETE NO ACTION
-        ON UPDATE NO ACTION,
+        ON UPDATE CASCADE,
     Contact_phone text,
     Address text,
     Is_blocked boolean NOT NULL,
