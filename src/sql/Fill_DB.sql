@@ -1,5 +1,5 @@
 
-INSERT INTO Passport ( Id, Issue_country, Issuer, Issue_date, Expiration_date, Serial_number text) VALUES
+INSERT INTO Passport ( Id, Issue_country, Issuer, Issue_date, Expiration_date, Serial_number) VALUES
 (1, 'Russia', 'Отделением УФМС России по г.Москва по р-ну Камовники', '10.05.2000', '21.04.2020', '1234 568954'),
 (2, 'Russia', 'Отделом УФМС России по Рязанской области и г.Рязань', '04.03.2011', '01.01.2036', '3508 569842'),
 (3, 'Russia', 'Отделом УФМС России по г.Администраторов', '8.04.1996', '', '6842 418965'),
@@ -8,14 +8,14 @@ INSERT INTO Passport ( Id, Issue_country, Issuer, Issue_date, Expiration_date, S
 (6, 'Russia', 'Отделом УФМС Росии по Санкт-Петербургу и Ленинградской области', '16.05.2013', '', '6614 745689');
 
 
--- (TODO: add passports instead of NULL)
-INSERT INTO Users (Id, Email, Password_hash, Role, Name, Birth_date, Signup_date, Pass_id, Contact_phone, Address, Is_blocked, Reputation) VALUES
-( 1, 'denis.n@notmail.mock', 'aaFF343GHj2434', 'client', 'Денис Ноунейм', '1975.04.21', '11.02.2020', NULL, '+7(831)1998708', 'Москва, улица Ленина 41', False, 1.0 ),
-( 2, 'raymond.johnson@notmail.mock', 'eWah9993dfj', 'client', 'Реймнод Джонсон', '1991.01.01', '11.02.2020', NULL, '+7 999 9999999', 'Рязань, Улица Дзержинского 8', False, 1.0 ),
-( 3, 'admin@admin', 'admin_pass_hash', 'admin', 'Администратор Антон', '1951.03.07', '10.02.2020', NULL, '+7(4812)276503', 'Город администраторов, ул. Управления 94', False, 4.3 ),
-( 4, 'coolhacker123@notmail.mock', 'fgdfg343r2a', 'client', 'Хакер Вася', '2004.01.01', '11.02.2020', NULL, '+7777777777', 'Не скажу', True, 0.1 ),
-( 5, 'petya@notmail.mock', 'dfsad12323', 'client', 'Петя Петров', '1997.04.04', '10.02.2020', NULL, '+73952899129', 'Санкт-Петербург, Кронверкский пр. 49', False, 1.0 ),
-( 6, 'galya888@notmail.mock', '1111dfsdJJFkk', 'client', 'Галина Орешкина', '1968.04.02', '11.02.2020', NULL, '+7(343)6985090', 'Санкт-Петербург', False, 1.0 );
+
+INSERT INTO Users (Id, Email, Password_hash, Role, Name, Birth_date, Signup_date, Pass_id, Driver_licese_id, Contact_phone, Address, Is_blocked, Reputation) VALUES
+( 1, 'denis.n@notmail.mock', 'aaFF343GHj2434', 'client', 'Денис Ноунейм', '1975.04.21', '11.02.2020', 1, 1, '+7(831)1998708', 'Москва, улица Ленина 41', False, 1.0 ),
+( 2, 'raymond.johnson@notmail.mock', 'eWah9993dfj', 'client', 'Реймнод Джонсон', '1991.01.01', '11.02.2020', 2, 2, '+7 999 9999999', 'Рязань, Улица Дзержинского 8', False, 1.0 ),
+( 3, 'admin@admin', 'admin_pass_hash', 'admin', 'Администратор Антон', '1951.03.07', '10.02.2020', 3, NULL, '+7(4812)276503', 'Город администраторов, ул. Управления 94', False, 4.3 ),
+( 4, 'coolhacker123@notmail.mock', 'fgdfg343r2a', 'client', 'Хакер Вася', '2004.01.01', '11.02.2020', 4, NULL, '+7777777777', 'Не скажу', True, 0.1 ),
+( 5, 'petya@notmail.mock', 'dfsad12323', 'client', 'Петя Петров', '1997.04.04', '10.02.2020', 5, 3, '+73952899129', 'Санкт-Петербург, Кронверкский пр. 49', False, 1.0 ),
+( 6, 'galya888@notmail.mock', '1111dfsdJJFkk', 'client', 'Галина Орешкина', '1968.04.02', '11.02.2020', 6, 4, '+7(343)6985090', 'Санкт-Петербург', False, 1.0 );
 
 INSERT INTO Car_model (Id, Brand_name, Model_name, Price_per_hour) VALUES
 ( 0, 'Toyota','Camry', 10),
@@ -63,18 +63,18 @@ INSERT INTO Car (Id, Model_id, Color, REG_number, VIN_number, Status) VALUES
 ( 35, 4,'white','H036KS|78', 'JTJGA31U140020162', 'taken'),
 ( 36, 4,'black','U037CU|98', '1FTFW1CF3EKF26195', 'taken');
 
--- TODO: admin and client should be different people
+
 INSERT INTO Orders (Id, Car_id, Client_id, Admin_id, Status, Rent_start_date,Rent_end_date, Discount) VALUES
-( 1, 1, 1, 1, 'open','2020.02.10', '2020.02.15', 28),
-( 2, 2, 2, 2, 'open','2020.02.10', '2020.02.15', 36),
+( 1, 1, 1, 3, 'open','2020.02.10', '2020.02.15', 28),
+( 2, 2, 2, 3, 'open','2020.02.10', '2020.02.15', 36),
 ( 3, 3, 3, 3, 'canceled','2020.02.10', '2020.02.15', 61),
-( 4, 4, 4, 4, 'open','2020.02.10', '2020.02.15', 79),
-( 5, 5, 5, 5, 'approved','2020.02.10', '2020.02.15', 59),
-( 6, 6, 6, 6, 'canceled','2020.02.10', '2020.02.15', 23),
-( 7, 7, 7, 7, 'approved','2020.02.10', '2020.02.15', 63),
-( 8, 8, 8, 8, 'waiting for payment','2020.02.10', '2020.02.15', 37),
-( 9, 9, 9, 9, 'close','2020.02.10', '2020.02.15', 79),
-( 10, 10, 10, 10, 'approved','2020.02.10', '2020.02.15', 27);
+( 4, 4, 4, 3, 'open','2020.02.10', '2020.02.15', 79),
+( 5, 5, 5, 3, 'approved','2020.02.10', '2020.02.15', 59),
+( 6, 6, 6, 3, 'canceled','2020.02.10', '2020.02.15', 23),
+( 7, 7, 7, 3, 'approved','2020.02.10', '2020.02.15', 63),
+( 8, 8, 8, 3, 'waiting for payment','2020.02.10', '2020.02.15', 37),
+( 9, 9, 9, 3, 'close','2020.02.10', '2020.02.15', 79),
+( 10, 10, 10, 3, 'approved','2020.02.10', '2020.02.15', 27);
 
 INSERT INTO Invoice (Id, Order_id, Status, Issue_date,Payment_date,Total_price) VALUES
 ( 1, 1,'close','2020.02.13', '2020.02.14', 2349),
@@ -88,9 +88,15 @@ INSERT INTO Invoice (Id, Order_id, Status, Issue_date,Payment_date,Total_price) 
 ( 9, 9,'open','2020.02.13', '2020.02.14', 7290),
 ( 10, 10,'open','2020.02.13', '2020.02.14', 4215);
 
-INSERT INTO Car_damage (Id, Order_id, Description, Date, Severity, Repair_cost, Status) VALUES
+INSERT INTO Car_damage (Id, Order_id, Description, Accident_date, Severity, Repair_cost, Status) VALUES
 (1, 1, 'вмятина на двери','2020.02.14', 4, 5600, 'fixed'),
 (2, 2, 'сбил косулю, много повреждений','2020.02.12', 9, 250899, 'under repair'),
 (3, 4, 'птица погнула дворник, замена дворника','2020.02.15', 1, 400, 'fixed'),
 (4, 5, 'прокол колеса','2020.02.14', 1, 800, 'fixed'),
-(5, 7, 'потерял коврик под водительским креслом','2020.02.14', 2, 1000, 'fixed');
+(5, 7, 'потерял коврик под водительским креслом','2020.02.14', 2, 1000, 'not fixed');
+
+INSERT INTO Driver_license (Id, Issue_date, Expiration_date, Serial_number) VALUES
+(1,'26.02.2010', '26.02.2020', '55 55 789456'),
+(2,'8.04.2015', '8.04.2025', '84 55 498215'),
+(3,'15.12.2019', '15.12.2029', '11 12 897664'),
+(4,'26.11.1995', '26.11.2005', '11 11 428935');
