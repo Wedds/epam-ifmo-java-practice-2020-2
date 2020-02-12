@@ -14,6 +14,13 @@ CREATE TABLE Passport (
     Serial_number text NOT NULL
 );
 
+CREATE TABLE Driving_license (
+    Id int PRIMARY KEY,
+    Issue_date date NOT NULL,
+    Expiration_date date,
+    Serial_number text NOT NULL
+);
+
 CREATE TABLE Users (
     Id serial PRIMARY KEY,
     Email text NOT NULL,
@@ -24,6 +31,10 @@ CREATE TABLE Users (
     Signup_date date NOT NULL,
     Pass_id int
         REFERENCES Passport(Id)
+        ON DELETE NO ACTION
+        ON UPDATE CASCADE,
+    Driving_license_id int
+        REFERENCES Driving_license(Id)
         ON DELETE NO ACTION
         ON UPDATE NO ACTION,
     Contact_phone text,
@@ -108,7 +119,7 @@ CREATE TABLE Car_damage (
         ON DELETE CASCADE
         ON UPDATE CASCADE,
     Description text NOT NULL,
-    Date date NOT NULL,
+    Accident_date date NOT NULL,
     Severity int NOT NULL,
     Repair_cost int NOT NULL,
     Status damage_status NOT NULL
