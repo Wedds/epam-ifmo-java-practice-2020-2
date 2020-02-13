@@ -3,7 +3,8 @@ name: Java CI
 on: 
   push:
    branches:
-     - '**'
+     - develop
+     - 'feature/**'
 jobs:
   tests:
 
