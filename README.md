@@ -23,4 +23,4 @@ ER-model
 ***
 Sitemap
 --------------------------
-![Sitemap](https://user-images.githubusercontent.com/38432080/74423972-315a8980-4e62-11ea-8a6f-062f6067fc81.png)
+![Sitemap](https://user-images.githubusercontent.com/38432080/74520243-32ee8500-4f28-11ea-84a1-007c246be709.png)
