@@ -1,6 +1,6 @@
 package com.ifmo.epampractice.enums;
 
-public enum OrdersStatus {
+public enum OrderStatus {
     OPEN,
     CANCELED,
     APPROVED,

@@ -1,24 +1,24 @@
 package com.ifmo.epampractice.entity;
 
-import com.ifmo.epampractice.enums.OrdersStatus;
+import com.ifmo.epampractice.enums.OrderStatus;
 
 import java.util.Date;
 import java.util.Objects;
 
-public class OrdersEntity {
+public class OrderEntity {
 
     private int id;
     private int carId;
     private int clientId;
     private int adminId;
-    private OrdersStatus status;
+    private OrderStatus status;
     private Date rentStartDate;
     private Date rentEndDate;
     private int discount;
 
-    public OrdersEntity(){}
+    public OrderEntity(){}
 
-    public OrdersEntity(int id, int carId, int clientId, int adminId, OrdersStatus status, Date rentStartDate, Date rentEndDate, int discount) {
+    public OrderEntity(int id, int carId, int clientId, int adminId, OrderStatus status, Date rentStartDate, Date rentEndDate, int discount) {
         this.id = id;
         this.carId = carId;
         this.clientId = clientId;
@@ -32,8 +32,8 @@ public class OrdersEntity {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof OrdersEntity)) return false;
-        OrdersEntity orders = (OrdersEntity) o;
+        if (!(o instanceof OrderEntity)) return false;
+        OrderEntity orders = (OrderEntity) o;
         return id == orders.id &&
                 carId == orders.carId &&
                 clientId == orders.clientId &&
@@ -82,11 +82,11 @@ public class OrdersEntity {
         this.adminId = adminId;
     }
 
-    public OrdersStatus getStatus() {
+    public OrderStatus getStatus() {
         return status;
     }
 
-    public void setStatus(OrdersStatus status) {
+    public void setStatus(OrderStatus status) {
         this.status = status;
     }
 
