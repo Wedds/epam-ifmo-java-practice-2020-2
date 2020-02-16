@@ -5,6 +5,7 @@ import com.ifmo.epampractice.enums.UserRole;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 public class UsersEntity {
     private int id;
@@ -160,41 +161,57 @@ public class UsersEntity {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
         UsersEntity that = (UsersEntity) o;
 
-        if (id != that.id) return false;
-        if (passId != that.passId) return false;
-        if (drivingLicenseId != that.drivingLicenseId) return false;
-        if (isBlocked != that.isBlocked) return false;
-        if (!email.equals(that.email)) return false;
-        if (!passwordHash.equals(that.passwordHash)) return false;
-        if (role != that.role) return false;
-        if (!name.equals(that.name)) return false;
-        if (!birthDate.equals(that.birthDate)) return false;
-        if (!signUpDate.equals(that.signUpDate)) return false;
-        if (!contactPhone.equals(that.contactPhone)) return false;
-        if (!address.equals(that.address)) return false;
+        if (id != that.id) {
+            return false;
+        }
+        if (passId != that.passId) {
+            return false;
+        }
+        if (drivingLicenseId != that.drivingLicenseId) {
+            return false;
+        }
+        if (isBlocked != that.isBlocked) {
+            return false;
+        }
+        if (!email.equals(that.email)) {
+            return false;
+        }
+        if (!passwordHash.equals(that.passwordHash)) {
+            return false;
+        }
+        if (role != that.role) {
+            return false;
+        }
+        if (!name.equals(that.name)) {
+            return false;
+        }
+        if (!birthDate.equals(that.birthDate)) {
+            return false;
+        }
+        if (!signUpDate.equals(that.signUpDate)) {
+            return false;
+        }
+        if (!contactPhone.equals(that.contactPhone)) {
+            return false;
+        }
+        if (!address.equals(that.address)) {
+            return false;
+        }
         return reputation.equals(that.reputation);
     }
 
     @Override
     public int hashCode() {
-        int result = id;
-        result = 31 * result + email.hashCode();
-        result = 31 * result + passwordHash.hashCode();
-        result = 31 * result + role.hashCode();
-        result = 31 * result + name.hashCode();
-        result = 31 * result + birthDate.hashCode();
-        result = 31 * result + signUpDate.hashCode();
-        result = 31 * result + passId;
-        result = 31 * result + drivingLicenseId;
-        result = 31 * result + contactPhone.hashCode();
-        result = 31 * result + address.hashCode();
-        result = 31 * result + (isBlocked ? 1 : 0);
-        result = 31 * result + reputation.hashCode();
-        return result;
+        return Objects.hash(id, email, passwordHash, role, name, birthDate, signUpDate, passId,
+                drivingLicenseId, contactPhone, address, isBlocked, reputation);
     }
 }
