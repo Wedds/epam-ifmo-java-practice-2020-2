@@ -10,28 +10,28 @@ import org.postgresql.ds.PGSimpleDataSource;
 public class DBConnectorPostgres implements DBConnectorInterface {
     private static DBConnectorPostgres instance;
 
-    private final String propertiesUrl = "/properties/dbPostgres.properties";
+    private final String PROPERTIES_URL = "/properties/dbPostgres.properties";
     private Properties properties = new Properties();
     private PGSimpleDataSource dataSource = new PGSimpleDataSource();
 
     private DBConnectorPostgres() {
+        setProperties();
+    }
+
+    private void setProperties() {
         try {
-            setProperties();
+            properties.load(this.getClass().getResourceAsStream(PROPERTIES_URL));
+            dataSource.setUrl(properties.getProperty("URL"));
+            dataSource.setUser(properties.getProperty("USERNAME"));
+            dataSource.setPassword(properties.getProperty("PASSWORD"));
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    private void setProperties() throws IOException {
-        properties.load(this.getClass().getResourceAsStream(propertiesUrl));
-        dataSource.setUrl(properties.getProperty("URL"));
-        dataSource.setUser(properties.getProperty("USERNAME"));
-        dataSource.setPassword(properties.getProperty("PASSWORD"));
 
     }
 
-    public static synchronized DBConnectorPostgres getInstance(){
-        if(instance == null){
+    public static synchronized DBConnectorPostgres getInstance() {
+        if (instance == null) {
             instance = new DBConnectorPostgres();
         }
         return instance;
@@ -43,7 +43,7 @@ public class DBConnectorPostgres implements DBConnectorInterface {
             return dataSource.getConnection();
         } catch (SQLException e) {
             e.printStackTrace();
-            return null;
+            throw new RuntimeException(e);
         }
     }
 }
