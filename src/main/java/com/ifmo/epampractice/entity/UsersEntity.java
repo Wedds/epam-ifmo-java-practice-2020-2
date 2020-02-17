@@ -1,4 +1,4 @@
-package com.ifmo.epampractice.entities;
+package com.ifmo.epampractice.entity;
 
 import com.ifmo.epampractice.enums.UserRole;
 
@@ -170,43 +170,19 @@ public class UsersEntity {
 
         UsersEntity that = (UsersEntity) o;
 
-        if (id != that.id) {
-            return false;
-        }
-        if (passId != that.passId) {
-            return false;
-        }
-        if (drivingLicenseId != that.drivingLicenseId) {
-            return false;
-        }
-        if (isBlocked != that.isBlocked) {
-            return false;
-        }
-        if (!email.equals(that.email)) {
-            return false;
-        }
-        if (!passwordHash.equals(that.passwordHash)) {
-            return false;
-        }
-        if (role != that.role) {
-            return false;
-        }
-        if (!name.equals(that.name)) {
-            return false;
-        }
-        if (!birthDate.equals(that.birthDate)) {
-            return false;
-        }
-        if (!signUpDate.equals(that.signUpDate)) {
-            return false;
-        }
-        if (!contactPhone.equals(that.contactPhone)) {
-            return false;
-        }
-        if (!address.equals(that.address)) {
-            return false;
-        }
-        return reputation.equals(that.reputation);
+        return Objects.equals(id, that.id) &&
+                Objects.equals(passId, that.passId) &&
+                Objects.equals(drivingLicenseId, that.drivingLicenseId) &&
+                Objects.equals(isBlocked, that.isBlocked) &&
+                Objects.equals(email, that.email) &&
+                Objects.equals(passwordHash, that.passwordHash) &&
+                Objects.equals(role, that.role) &&
+                Objects.equals(name, that.name) &&
+                Objects.equals(birthDate, that.birthDate) &&
+                Objects.equals(signUpDate, that.signUpDate) &&
+                Objects.equals(contactPhone, that.contactPhone) &&
+                Objects.equals(address, that.address) &&
+                Objects.equals(reputation, that.reputation);
     }
 
     @Override
