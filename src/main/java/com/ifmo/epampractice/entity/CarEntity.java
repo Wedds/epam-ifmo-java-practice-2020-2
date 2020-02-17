@@ -89,7 +89,7 @@ public class CarEntity {
                 color.equals(carEntity.color) &&
                 regNumber.equals(carEntity.regNumber) &&
                 VIN.equals(carEntity.VIN) &&
-                status == carEntity.status
+                Objects.equals(status, carEntity.status)
         );
     }
 
