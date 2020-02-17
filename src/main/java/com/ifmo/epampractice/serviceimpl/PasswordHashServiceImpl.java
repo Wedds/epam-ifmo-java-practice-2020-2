@@ -49,7 +49,7 @@ public class PasswordHashServiceImpl implements PasswordHashService {
 
         // Ensure salt string only contains allowed letters
         for (int i = 0; i < saltBytes.length; i++) {
-            saltBytes[i] = ensureInAlphabet(saltBytes[i]);
+            saltBytes[i] = ensureIsInAlphabet(saltBytes[i]);
         }
         return saltBytes;
     }
@@ -64,7 +64,7 @@ public class PasswordHashServiceImpl implements PasswordHashService {
 
             // Ensure hash string only contains allowed letters
             for (int i = 0; i < hashBytes.length; i++) {
-                hashBytes[i] = ensureInAlphabet(hashBytes[i]);
+                hashBytes[i] = ensureIsInAlphabet(hashBytes[i]);
             }
 
             return hashBytes;
