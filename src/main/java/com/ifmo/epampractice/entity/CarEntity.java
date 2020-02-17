@@ -86,9 +86,9 @@ public class CarEntity {
         return (
                 id == carEntity.id &&
                 modelId == carEntity.modelId &&
-                color.equals(carEntity.color) &&
-                regNumber.equals(carEntity.regNumber) &&
-                VIN.equals(carEntity.VIN) &&
+                Objects.equals(color, carEntity.color) &&
+                Objects.equals(regNumber, carEntity.regNumber) &&
+                Objects.equals(VIN, carEntity.VIN) &&
                 Objects.equals(status, carEntity.status)
         );
     }
