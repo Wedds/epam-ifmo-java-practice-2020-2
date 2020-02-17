@@ -102,7 +102,7 @@ CREATE TABLE Invoice (
         ON UPDATE CASCADE,
     Issue_date date NOT NULL,
     Payment_date date NOT NULL,
-    Total_price int NOT NULL,
+    Total_price numeric NOT NULL,
     Status e_status_invoice NOT NULL
 );
 
