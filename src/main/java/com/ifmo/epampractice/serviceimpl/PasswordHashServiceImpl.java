@@ -47,11 +47,9 @@ public class PasswordHashServiceImpl implements PasswordHashService {
         byte[] saltBytes = new byte[16];
         rand.nextBytes(saltBytes);
 
-        // Ensure salt string doesn't contain separator character
+        // Ensure salt string only contains allowed letters
         for (int i = 0; i < saltBytes.length; i++) {
-            if (saltBytes[i] == SALT_SEPARATOR) {
-                saltBytes[i] = '8'; // could be whatever other character
-            }
+            saltBytes[i] = ensureInAlphabet(saltBytes[i]);
         }
         return saltBytes;
     }
@@ -62,11 +60,29 @@ public class PasswordHashServiceImpl implements PasswordHashService {
         try {
             MessageDigest md = MessageDigest.getInstance(HASH_ALGORITHM);
             md.update(salt);
-            return md.digest(input);
+            byte[] hashBytes = md.digest(input);
+
+            // Ensure hash string only contains allowed letters
+            for (int i = 0; i < hashBytes.length; i++) {
+                hashBytes[i] = ensureInAlphabet(hashBytes[i]);
+            }
+
+            return hashBytes;
         }
         catch (NoSuchAlgorithmException e) {
             throw new HashingException("Hashing algorithm not found: " + HASH_ALGORITHM, e);
         }
     }
 
+    /**
+     * Ensures input byte value is between ALPHABET_START and ALPHABET_END.
+     */
+    private byte ensureInAlphabet(byte input) {
+        // Allowed characters for hash/salt output: 0-9 a-z A-Z :;<=>?@
+        final byte ALPHABET_START = 48;
+        final byte ALPHABET_END = 122;
+
+        final byte ALPHABET_SIZE = ALPHABET_END - ALPHABET_START + 1;
+        return (byte)(ALPHABET_START + (Math.abs(input) % ALPHABET_SIZE));
+    }
 }
