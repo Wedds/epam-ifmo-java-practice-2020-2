@@ -2,6 +2,7 @@ package com.ifmo.epampractice.entity;
 
 import com.ifmo.epampractice.enums.OrderStatus;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Objects;
 
@@ -14,11 +15,11 @@ public class OrderEntity {
     private OrderStatus status;
     private Date rentStartDate;
     private Date rentEndDate;
-    private int discount;
+    private BigDecimal discount;
 
     public OrderEntity(){}
 
-    public OrderEntity(int id, int carId, int clientId, int adminId, OrderStatus status, Date rentStartDate, Date rentEndDate, int discount) {
+    public OrderEntity(int id, int carId, int clientId, int adminId, OrderStatus status, Date rentStartDate, Date rentEndDate, BigDecimal discount) {
         this.id = id;
         this.carId = carId;
         this.clientId = clientId;
@@ -38,7 +39,7 @@ public class OrderEntity {
                 carId == orders.carId &&
                 clientId == orders.clientId &&
                 adminId == orders.adminId &&
-                discount == orders.discount &&
+                Objects.equals(discount, orders.discount) &&
                 status == orders.status &&
                 Objects.equals(rentStartDate, orders.rentStartDate) &&
                 Objects.equals(rentEndDate, orders.rentEndDate);
@@ -106,11 +107,11 @@ public class OrderEntity {
         this.rentEndDate = rentEndDate;
     }
 
-    public int getDiscount() {
+    public BigDecimal getDiscount() {
         return discount;
     }
 
-    public void setDiscount(int discount) {
+    public void setDiscount(BigDecimal discount) {
         this.discount = discount;
     }
 
