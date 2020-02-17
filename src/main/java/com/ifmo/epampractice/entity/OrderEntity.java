@@ -17,7 +17,8 @@ public class OrderEntity {
     private Date rentEndDate;
     private BigDecimal discount;
 
-    public OrderEntity(){}
+    public OrderEntity() {
+    }
 
     public OrderEntity(int id, int carId, int clientId, int adminId, OrderStatus status, Date rentStartDate, Date rentEndDate, BigDecimal discount) {
         this.id = id;
@@ -32,8 +33,12 @@ public class OrderEntity {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof OrderEntity)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof OrderEntity)) {
+            return false;
+        }
         OrderEntity orders = (OrderEntity) o;
         return id == orders.id &&
                 carId == orders.carId &&
