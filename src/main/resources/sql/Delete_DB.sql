@@ -9,8 +9,8 @@ DROP table invoice,
     car,
     car_model;
 
-DROP type e_car_status,
-    e_damage_status,
+DROP type e_status_car,
+    e_status_damage,
     e_role_users,
     e_status_invoice,
     e_status_order;
