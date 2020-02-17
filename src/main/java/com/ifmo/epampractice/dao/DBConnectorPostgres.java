@@ -16,7 +16,6 @@ public class DBConnectorPostgres implements DBConnectorInterface {
 
     private DBConnectorPostgres() {
         try {
-            dataSource = new PGSimpleDataSource();
             setProperties();
         } catch (IOException e) {
             e.printStackTrace();
