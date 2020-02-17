@@ -77,7 +77,7 @@ public class PasswordHashServiceImpl implements PasswordHashService {
     /**
      * Ensures input byte value is between ALPHABET_START and ALPHABET_END.
      */
-    private byte ensureInAlphabet(byte input) {
+    private byte ensureIsInAlphabet(byte input) {
         // Allowed characters for hash/salt output: 0-9 a-z A-Z :;<=>?@
         final byte ALPHABET_START = 48;
         final byte ALPHABET_END = 122;
