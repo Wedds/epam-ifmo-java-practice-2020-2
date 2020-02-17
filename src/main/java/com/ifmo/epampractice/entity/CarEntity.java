@@ -81,15 +81,15 @@ public class CarEntity {
             return false;
         }
 
-        CarEntity carEntity = (CarEntity) o;
+        CarEntity that = (CarEntity) o;
 
         return (
-                id == carEntity.id &&
-                modelId == carEntity.modelId &&
-                Objects.equals(color, carEntity.color) &&
-                Objects.equals(regNumber, carEntity.regNumber) &&
-                Objects.equals(VIN, carEntity.VIN) &&
-                Objects.equals(status, carEntity.status)
+                Objects.equals(id, that.id) &&
+                Objects.equals(modelId, that.modelId) &&
+                Objects.equals(color, that.color) &&
+                Objects.equals(regNumber, that.regNumber) &&
+                Objects.equals(VIN, that.VIN) &&
+                Objects.equals(status, that.status)
         );
     }
 
