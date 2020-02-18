@@ -1,6 +1,7 @@
 package com.ifmo.epampractice.serviceimpl;
 
 import com.ifmo.epampractice.exceptions.HashingException;
+import com.ifmo.epampractice.security.SecureString;
 import com.ifmo.epampractice.services.PasswordHashService;
 import org.junit.Test;
 import org.junit.Assert;
@@ -11,7 +12,9 @@ public class PasswordHashServiceTest {
 
     @Test
     public void resultingHashTest() {
-        final String TEST_PASSWORD = "helloworld123";
+        final SecureString TEST_PASSWORD = new SecureString(
+                new char[] { 'h', 'e', 'l', 'l', 'o', 'w', 'o', 'r', 'l', 'd', '1', '2', '3' }
+        );
         PasswordHashService hashService = new PasswordHashServiceImpl();
 
         try {
@@ -31,7 +34,9 @@ public class PasswordHashServiceTest {
 
     @Test
     public void validPasswordAuthTest() {
-        final String TEST_PASSWORD = "helloworld123";
+        final SecureString TEST_PASSWORD = new SecureString(
+                new char[] { 'h', 'e', 'l', 'l', 'o', 'w', 'o', 'r', 'l', 'd', '1', '2', '3' }
+        );
 
         PasswordHashService hashService = new PasswordHashServiceImpl();
 
@@ -48,8 +53,12 @@ public class PasswordHashServiceTest {
 
     @Test
     public void invalidPasswordAuthTest() {
-        final String TEST_PASSWORD_1 = "helloworld123";
-        final String TEST_PASSWORD_2 = "wrongpassword456";
+        final SecureString TEST_PASSWORD_1 = new SecureString(
+                new char[] { 'h', 'e', 'l', 'l', 'o', 'w', 'o', 'r', 'l', 'd', '1', '2', '3' }
+        );
+        final SecureString TEST_PASSWORD_2 = new SecureString(
+                new char[] { 'w', 'r', 'o', 'n', 'g', 'p', 'a', 's', 's' }
+        );
 
         PasswordHashService hashService = new PasswordHashServiceImpl();
 

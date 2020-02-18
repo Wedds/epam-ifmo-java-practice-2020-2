@@ -1,6 +1,7 @@
 package com.ifmo.epampractice.serviceimpl;
 
 import com.ifmo.epampractice.exceptions.HashingException;
+import com.ifmo.epampractice.security.SecureString;
 import com.ifmo.epampractice.services.PasswordHashService;
 
 import java.nio.charset.StandardCharsets;
@@ -14,7 +15,13 @@ public class PasswordHashServiceImpl implements PasswordHashService {
     private final char SALT_SEPARATOR = '#';
 
     @Override
-    public String getHash(String password) throws HashingException {
+    public String getHash(SecureString password)
+            throws HashingException, IllegalArgumentException {
+
+        if (password == null || password.isDisposed()) {
+            throw new IllegalArgumentException("Trying to pass null or disposed SecureString as argument.");
+        }
+
         byte[] saltBytes = getSalt();
         byte[] passwordBytes = password.getBytes(StandardCharsets.US_ASCII);
         byte[] passwordHashBytes = getHash(passwordBytes, saltBytes);
@@ -25,8 +32,12 @@ public class PasswordHashServiceImpl implements PasswordHashService {
     }
 
     @Override
-    public boolean isMatching(String saltedHash, String password)
+    public boolean isMatching(String saltedHash, SecureString password)
             throws HashingException, IllegalArgumentException {
+
+        if (password == null || password.isDisposed()) {
+            throw new IllegalArgumentException("Trying to pass null or disposed SecureString as argument.");
+        }
 
         String[] hashParts = saltedHash.split(Character.toString(SALT_SEPARATOR));
         if (hashParts.length != 2) {
