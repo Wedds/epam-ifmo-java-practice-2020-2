@@ -1,4 +1,4 @@
-package com.ifmo.epampractice.entities;
+package com.ifmo.epampractice.entity;
 
 import com.ifmo.epampractice.enums.DamageStatus;
 
@@ -14,7 +14,8 @@ public class CarDamageEntity {
     private int repairCost;
     private DamageStatus status;
 
-    public CarDamageEntity(int id, int orderId, String description, LocalDate accidentDate, int severity, int repairCost, DamageStatus status) {
+    public CarDamageEntity(int id, int orderId, String description, LocalDate accidentDate,
+                           int severity, int repairCost, DamageStatus status) {
         this.id = id;
         this.orderId = orderId;
         this.description = description;
@@ -82,15 +83,19 @@ public class CarDamageEntity {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         CarDamageEntity that = (CarDamageEntity) o;
         return id == that.id &&
                 orderId == that.orderId &&
                 severity == that.severity &&
                 repairCost == that.repairCost &&
-                description.equals(that.description) &&
-                accidentDate.equals(that.accidentDate) &&
+                Objects.equals(description, that.description) &&
+                Objects.equals(accidentDate, that.accidentDate) &&
                 status == that.status;
     }
 
