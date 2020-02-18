@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class UsersEntity {
+
     private int id;
     private String email;
     private String passwordHash;
@@ -171,23 +172,23 @@ public class UsersEntity {
         UsersEntity that = (UsersEntity) o;
 
         return id == that.id &&
-                passId == that.passId &&
-                drivingLicenseId == that.drivingLicenseId &&
-                isBlocked == that.isBlocked &&
-                Objects.equals(email, that.email) &&
-                Objects.equals(passwordHash, that.passwordHash) &&
-                Objects.equals(role, that.role) &&
-                Objects.equals(name, that.name) &&
-                Objects.equals(birthDate, that.birthDate) &&
-                Objects.equals(signUpDate, that.signUpDate) &&
-                Objects.equals(contactPhone, that.contactPhone) &&
-                Objects.equals(address, that.address) &&
-                Objects.equals(reputation, that.reputation);
+               passId == that.passId &&
+               drivingLicenseId == that.drivingLicenseId &&
+               isBlocked == that.isBlocked &&
+               Objects.equals(email, that.email) &&
+               Objects.equals(passwordHash, that.passwordHash) &&
+               role == that.role &&
+               Objects.equals(name, that.name) &&
+               Objects.equals(birthDate, that.birthDate) &&
+               Objects.equals(signUpDate, that.signUpDate) &&
+               Objects.equals(contactPhone, that.contactPhone) &&
+               Objects.equals(address, that.address) &&
+               Objects.equals(reputation, that.reputation);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(id, email, passwordHash, role, name, birthDate, signUpDate, passId,
-                drivingLicenseId, contactPhone, address, isBlocked, reputation);
+                            drivingLicenseId, contactPhone, address, isBlocked, reputation);
     }
 }
