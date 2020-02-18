@@ -170,10 +170,10 @@ public class UsersEntity {
 
         UsersEntity that = (UsersEntity) o;
 
-        return Objects.equals(id, that.id) &&
-                Objects.equals(passId, that.passId) &&
-                Objects.equals(drivingLicenseId, that.drivingLicenseId) &&
-                Objects.equals(isBlocked, that.isBlocked) &&
+        return id == that.id &&
+                passId == that.passId &&
+                drivingLicenseId == that.drivingLicenseId &&
+                isBlocked == that.isBlocked &&
                 Objects.equals(email, that.email) &&
                 Objects.equals(passwordHash, that.passwordHash) &&
                 Objects.equals(role, that.role) &&
