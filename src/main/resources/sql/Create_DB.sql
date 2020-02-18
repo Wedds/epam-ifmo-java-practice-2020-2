@@ -50,7 +50,7 @@ CREATE TABLE Car_model (
     Price_per_hour numeric NOT NULL
 );
 
-CREATE TYPE car_status as ENUM ( 'broken', 'taken', 'free' );
+CREATE TYPE e_status_car as ENUM ( 'broken', 'taken', 'free' );
 
 CREATE TABLE Car (
     Id int PRIMARY KEY,
@@ -61,7 +61,7 @@ CREATE TABLE Car (
     Color text NOT NULL,
     REG_number text NOT NULL,
     VIN_number text NOT NULL,
-    Status car_status NOT NULL
+    Status e_status_car NOT NULL
 );
 
 CREATE TYPE e_status_order AS ENUM (
@@ -106,7 +106,7 @@ CREATE TABLE Invoice (
     Status e_status_invoice NOT NULL
 );
 
-CREATE TYPE damage_status AS ENUM (
+CREATE TYPE e_status_damage AS ENUM (
     'fixed',
     'not fixed',
     'under repair'
@@ -122,7 +122,7 @@ CREATE TABLE Car_damage (
     Accident_date date NOT NULL,
     Severity int NOT NULL,
     Repair_cost int NOT NULL,
-    Status damage_status NOT NULL
+    Status e_status_damage NOT NULL
 );
 
 COMMIT;
