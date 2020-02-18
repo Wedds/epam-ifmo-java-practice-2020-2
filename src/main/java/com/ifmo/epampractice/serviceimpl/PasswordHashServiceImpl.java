@@ -26,6 +26,8 @@ public class PasswordHashServiceImpl implements PasswordHashService {
         byte[] passwordBytes = password.getBytes(StandardCharsets.US_ASCII);
         byte[] passwordHashBytes = getHash(passwordBytes, saltBytes);
 
+        Arrays.fill(passwordBytes, (byte) 0); // Clear password for security reasons
+
         return new String(saltBytes, StandardCharsets.US_ASCII) +
                 SALT_SEPARATOR +
                 new String(passwordHashBytes, StandardCharsets.US_ASCII);
@@ -49,6 +51,8 @@ public class PasswordHashServiceImpl implements PasswordHashService {
         byte[] hashBytes = hashParts[1].getBytes(StandardCharsets.US_ASCII);
         byte[] passwordBytes = password.getBytes(StandardCharsets.US_ASCII);
         byte[] passwordHashBytes = getHash(passwordBytes, saltBytes);
+
+        Arrays.fill(passwordBytes, (byte) 0); // Clear password for security reasons
 
         return Arrays.equals(hashBytes, passwordHashBytes);
     }
