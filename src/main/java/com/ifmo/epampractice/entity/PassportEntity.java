@@ -1,4 +1,4 @@
-package com.ifmo.epampractice.entities;
+package com.ifmo.epampractice.entity;
 
 import java.time.LocalDate;
 import java.util.Objects;
@@ -11,7 +11,8 @@ public class PassportEntity {
     private LocalDate expirationDate;
     private String serialNumber;
 
-    public PassportEntity(int id, String issueCountry, String issuer, LocalDate issueDate, LocalDate expirationDate, String serialNumber) {
+    public PassportEntity(int id, String issueCountry, String issuer, LocalDate issueDate,
+                          LocalDate expirationDate, String serialNumber) {
         this.id = id;
         this.issueCountry = issueCountry;
         this.issuer = issuer;
@@ -70,25 +71,23 @@ public class PassportEntity {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         PassportEntity that = (PassportEntity) o;
         return id == that.id &&
-                issueCountry.equals(that.issueCountry) &&
-                issuer.equals(that.issuer) &&
-                issueDate.equals(that.issueDate) &&
-                expirationDate.equals(that.expirationDate) &&
-                serialNumber.equals(that.serialNumber);
+                Objects.equals(issueCountry,that.issueCountry) &&
+                Objects.equals(issuer, that.issuer) &&
+                Objects.equals(issueDate, that.issueDate) &&
+                Objects.equals(expirationDate, that.expirationDate) &&
+                Objects.equals(serialNumber, that.serialNumber);
     }
 
     @Override
     public int hashCode() {
-        int result = id;
-        result = 31 * result + issueCountry.hashCode();
-        result = 31 * result + issuer.hashCode();
-        result = 31 * result + issueDate.hashCode();
-        result = 31 * result + expirationDate.hashCode();
-        result = 31 * result + serialNumber.hashCode();
-        return result;
+        return Objects.hash(id, issueCountry, issuer, issueDate, expirationDate, serialNumber);
     }
 }
