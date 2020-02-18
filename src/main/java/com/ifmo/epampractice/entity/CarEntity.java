@@ -9,16 +9,16 @@ public class CarEntity {
     private int         modelId;
     private String      color;
     private String      regNumber;
-    private String      VIN;
+    private String      vin;
     private CarStatus   status;
 
     public CarEntity(int id, int modelId, String color, String regNumber,
-                     String VIN, CarStatus status) {
+                     String vin, CarStatus status) {
         this.id = id;
         this.modelId = modelId;
         this.color = color;
         this.regNumber = regNumber;
-        this.VIN = VIN;
+        this.vin = vin;
         this.status = status;
     }
 
@@ -55,12 +55,12 @@ public class CarEntity {
         this.regNumber = regNumber;
     }
 
-    public String getVIN() {
-        return VIN;
+    public String getVin() {
+        return vin;
     }
 
-    public void setVIN(String VIN) {
-        this.VIN = VIN;
+    public void setVin(String vin) {
+        this.vin = vin;
     }
 
     public CarStatus getStatus() {
@@ -84,17 +84,17 @@ public class CarEntity {
         CarEntity that = (CarEntity) o;
 
         return (
-                Objects.equals(id, that.id) &&
-                Objects.equals(modelId, that.modelId) &&
+                id == that.id &&
+                modelId == that.modelId &&
                 Objects.equals(color, that.color) &&
                 Objects.equals(regNumber, that.regNumber) &&
-                Objects.equals(VIN, that.VIN) &&
+                Objects.equals(vin, that.vin) &&
                 Objects.equals(status, that.status)
         );
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, modelId, color, regNumber, VIN, status);
+        return Objects.hash(id, modelId, color, regNumber, vin, status);
     }
 }
