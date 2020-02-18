@@ -62,7 +62,7 @@ public class CarModelEntity {
         CarModelEntity that = (CarModelEntity) o;
 
         return (
-                Objects.equals(id, that.id) &&
+                id == that.id &&
                 Objects.equals(brandName, that.brandName) &&
                 Objects.equals(modelName, that.modelName) &&
                 Objects.equals(pricePerHour, that.pricePerHour)
