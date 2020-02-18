@@ -10,4 +10,6 @@ public interface BasicDaoInterface<T> {
     void update(T o);
 
     void delete(T o);
+
+    void save(T o);
 }
