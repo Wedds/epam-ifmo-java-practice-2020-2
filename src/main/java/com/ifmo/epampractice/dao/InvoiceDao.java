@@ -13,7 +13,7 @@ public class InvoiceDao implements BasicDaoInterface<InvoiceEntity> {
     static final String GET_ALL_QUERY = "SELECT * FROM INVOICE";
     static final String GET_QUERY = "SELECT * FROM INVOICE WHERE ID = ?";
     static final String SAVE_QUERY = "INSERT INTO INVOICE (ORDER_ID, ISSUE_DATE, " +
-            "PAYMENT_DATE, TOTAL_PRICE, STATUS, ID) VALUES ( ?, ?, ?, ?, ?::e_status_invoice, ?)";
+            "PAYMENT_DATE, TOTAL_PRICE, STATUS) VALUES ( ?, ?, ?, ?, ?::e_status_invoice)";
     static final String UPDATE_QUERY = "UPDATE INVOICE SET (ORDER_ID, ISSUE_DATE, " +
             "PAYMENT_DATE, TOTAL_PRICE, STATUS) = (?, ?, ?, ?, ?::e_status_invoice) WHERE ID = ?";
     static final String DELETE_QUERY = "DELETE FROM INVOICE WHERE ID = ?";
@@ -31,7 +31,6 @@ public class InvoiceDao implements BasicDaoInterface<InvoiceEntity> {
     }
 
     private void setInvoiceFieldsToStatement(InvoiceEntity invoice, PreparedStatement statement) throws SQLException {
-        statement.setInt(6, invoice.getId());
         statement.setInt(1, invoice.getOrderId());
         statement.setDate(2, new java.sql.Date(invoice.getIssueDate().getTime()));
         statement.setDate(3, new java.sql.Date(invoice.getPaymentDate().getTime()));
@@ -90,6 +89,7 @@ public class InvoiceDao implements BasicDaoInterface<InvoiceEntity> {
             PreparedStatement statement = connection.prepareStatement(UPDATE_QUERY, ResultSet.TYPE_SCROLL_SENSITIVE,
                     ResultSet.CONCUR_UPDATABLE);
             setInvoiceFieldsToStatement(invoice, statement);
+            statement.setInt(6, invoice.getId());
             statement.execute();
             connection.close();
         } catch (SQLException e) {
@@ -120,7 +120,7 @@ public class InvoiceDao implements BasicDaoInterface<InvoiceEntity> {
             PreparedStatement statement = connection.prepareStatement(SAVE_QUERY, ResultSet.TYPE_SCROLL_SENSITIVE,
                     ResultSet.CONCUR_UPDATABLE);
             setInvoiceFieldsToStatement(invoice, statement);
-            statement.execute();
+            statement.executeUpdate();
             connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
