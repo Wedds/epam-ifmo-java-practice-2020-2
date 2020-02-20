@@ -21,7 +21,7 @@ public class PasswordHashServiceImpl implements PasswordHashService {
     private static final byte ALPHABET_SIZE = ALPHABET_END - ALPHABET_START + 1;
 
     @Override
-    public String getHash(SecureString password) throws HashingException {
+    public String getHash(SecureString password) {
         if (password == null || password.isDisposed()) {
             throw new IllegalArgumentException(
                     "Trying to pass null or disposed SecureString as argument.");
@@ -39,8 +39,7 @@ public class PasswordHashServiceImpl implements PasswordHashService {
     }
 
     @Override
-    public boolean isMatching(String saltedHash, SecureString password)
-            throws HashingException {
+    public boolean isMatching(String saltedHash, SecureString password) {
 
         if (password == null || password.isDisposed()) {
             throw new IllegalArgumentException(
@@ -75,7 +74,7 @@ public class PasswordHashServiceImpl implements PasswordHashService {
         return saltBytes;
     }
 
-    private byte[] getHash(byte[] input, byte[] salt) throws HashingException {
+    private byte[] getHash(byte[] input, byte[] salt) {
         try {
             MessageDigest md = MessageDigest.getInstance(HASH_ALGORITHM);
             md.update(salt);

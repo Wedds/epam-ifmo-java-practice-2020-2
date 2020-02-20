@@ -12,13 +12,13 @@ public class PasswordHashServiceTest {
 
     @Test
     public void resultingHashTest() {
-        final SecureString TEST_PASSWORD = new SecureString(
+        final SecureString testPassword = new SecureString(
                 new char[] { 'h', 'e', 'l', 'l', 'o', 'w', 'o', 'r', 'l', 'd', '1', '2', '3' }
         );
         PasswordHashService hashService = new PasswordHashServiceImpl();
 
         try {
-            String hashStr = hashService.getHash(TEST_PASSWORD);
+            String hashStr = hashService.getHash(testPassword);
             Assert.assertNotEquals(null, hashStr);
 
             String[] split = hashStr.split("#");
@@ -34,15 +34,15 @@ public class PasswordHashServiceTest {
 
     @Test
     public void validPasswordAuthTest() {
-        final SecureString TEST_PASSWORD = new SecureString(
+        final SecureString testPassword = new SecureString(
                 new char[] { 'h', 'e', 'l', 'l', 'o', 'w', 'o', 'r', 'l', 'd', '1', '2', '3' }
         );
 
         PasswordHashService hashService = new PasswordHashServiceImpl();
 
         try {
-            String hashStr = hashService.getHash(TEST_PASSWORD);
-            boolean result = hashService.isMatching(hashStr, TEST_PASSWORD);
+            String hashStr = hashService.getHash(testPassword);
+            boolean result = hashService.isMatching(hashStr, testPassword);
             Assert.assertTrue(result);
         }
         catch (HashingException e) {
@@ -53,18 +53,18 @@ public class PasswordHashServiceTest {
 
     @Test
     public void invalidPasswordAuthTest() {
-        final SecureString TEST_PASSWORD_1 = new SecureString(
+        final SecureString testPassword1 = new SecureString(
                 new char[] { 'h', 'e', 'l', 'l', 'o', 'w', 'o', 'r', 'l', 'd', '1', '2', '3' }
         );
-        final SecureString TEST_PASSWORD_2 = new SecureString(
+        final SecureString testPassword2 = new SecureString(
                 new char[] { 'w', 'r', 'o', 'n', 'g', 'p', 'a', 's', 's' }
         );
 
         PasswordHashService hashService = new PasswordHashServiceImpl();
 
         try {
-            String hashStr = hashService.getHash(TEST_PASSWORD_1);
-            boolean result = hashService.isMatching(hashStr, TEST_PASSWORD_2);
+            String hashStr = hashService.getHash(testPassword1);
+            boolean result = hashService.isMatching(hashStr, testPassword2);
             Assert.assertFalse(result);
         }
         catch (HashingException e) {
