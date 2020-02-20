@@ -48,9 +48,10 @@ public class UsersDaoImpl implements UsersDao {
     public UsersEntity get(int id) {
         DBConnectorInterface dbConnector = DBConnectorPostgres.getInstance();
         try (Connection connection = dbConnector.getConnection()) {
-            Statement statement = connection.createStatement(
+            PreparedStatement statement = connection.prepareStatement(GET_QUERY,
                     ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
-            ResultSet resultSet = statement.executeQuery(GET_QUERY);
+            statement.setInt(1, id);
+            ResultSet resultSet = statement.executeQuery();
             if (!resultSet.next()) {
                 return null;
             }
