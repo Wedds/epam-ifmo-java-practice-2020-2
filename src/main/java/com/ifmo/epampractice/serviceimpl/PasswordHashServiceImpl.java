@@ -12,14 +12,19 @@ import java.util.Arrays;
 
 public class PasswordHashServiceImpl implements PasswordHashService {
 
-    private final char SALT_SEPARATOR = '#';
+    private static final char SALT_SEPARATOR = '#';
+    private static final String HASH_ALGORITHM = "SHA-512";
+
+    // Allowed characters for hash/salt output: 0-9 a-z A-Z :;<=>?@
+    private static final byte ALPHABET_START = 48;
+    private static final byte ALPHABET_END = 122;
+    private static final byte ALPHABET_SIZE = ALPHABET_END - ALPHABET_START + 1;
 
     @Override
-    public String getHash(SecureString password)
-            throws HashingException, IllegalArgumentException {
-
+    public String getHash(SecureString password) throws HashingException {
         if (password == null || password.isDisposed()) {
-            throw new IllegalArgumentException("Trying to pass null or disposed SecureString as argument.");
+            throw new IllegalArgumentException(
+                    "Trying to pass null or disposed SecureString as argument.");
         }
 
         byte[] saltBytes = getSalt();
@@ -35,10 +40,11 @@ public class PasswordHashServiceImpl implements PasswordHashService {
 
     @Override
     public boolean isMatching(String saltedHash, SecureString password)
-            throws HashingException, IllegalArgumentException {
+            throws HashingException {
 
         if (password == null || password.isDisposed()) {
-            throw new IllegalArgumentException("Trying to pass null or disposed SecureString as argument.");
+            throw new IllegalArgumentException(
+                    "Trying to pass null or disposed SecureString as argument.");
         }
 
         String[] hashParts = saltedHash.split(Character.toString(SALT_SEPARATOR));
@@ -70,8 +76,6 @@ public class PasswordHashServiceImpl implements PasswordHashService {
     }
 
     private byte[] getHash(byte[] input, byte[] salt) throws HashingException {
-        final String HASH_ALGORITHM = "SHA-512";
-
         try {
             MessageDigest md = MessageDigest.getInstance(HASH_ALGORITHM);
             md.update(salt);
@@ -93,11 +97,6 @@ public class PasswordHashServiceImpl implements PasswordHashService {
      * Ensures input byte value is between ALPHABET_START and ALPHABET_END.
      */
     private byte ensureIsInAlphabet(byte input) {
-        // Allowed characters for hash/salt output: 0-9 a-z A-Z :;<=>?@
-        final byte ALPHABET_START = 48;
-        final byte ALPHABET_END = 122;
-
-        final byte ALPHABET_SIZE = ALPHABET_END - ALPHABET_START + 1;
         return (byte)(ALPHABET_START + (Math.abs(input) % ALPHABET_SIZE));
     }
 }

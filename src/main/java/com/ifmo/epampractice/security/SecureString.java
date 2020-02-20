@@ -51,10 +51,6 @@ public final class SecureString {
         return (char)(chars.get(index) ^ pad.get(index));
     }
 
-    /**
-     * Encodes string as an array of bytes.
-     * For security reasons, remember to clear resulting array after use.
-     */
     public byte[] getBytes(Charset charset) {
         CharBuffer charBuffer = CharBuffer.allocate(getLength());
         for (int i = 0; i < getLength(); i++) {
@@ -69,12 +65,6 @@ public final class SecureString {
         Arrays.fill(byteBuffer.array(), (byte) 0);
         Arrays.fill(charBuffer.array(), (char) 0);
         return bytes;
-    }
-
-    @Override
-    protected void finalize() throws Throwable {
-        dispose();
-        super.finalize();
     }
 
     @Override

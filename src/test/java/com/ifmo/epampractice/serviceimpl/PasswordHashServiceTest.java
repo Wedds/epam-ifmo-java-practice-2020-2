@@ -23,8 +23,8 @@ public class PasswordHashServiceTest {
 
             String[] split = hashStr.split("#");
             Assert.assertEquals(2, split.length);
-            Assert.assertEquals(true, (split[0] != null && split[0].length() > 0));
-            Assert.assertEquals(true, (split[1] != null && split[0].length() > 0));
+            Assert.assertTrue(split[0] != null && split[0].length() > 0);
+            Assert.assertTrue(split[1] != null && split[1].length() > 0);
         }
         catch (HashingException e) {
             e.printStackTrace();
@@ -43,7 +43,7 @@ public class PasswordHashServiceTest {
         try {
             String hashStr = hashService.getHash(TEST_PASSWORD);
             boolean result = hashService.isMatching(hashStr, TEST_PASSWORD);
-            Assert.assertEquals(true, result);
+            Assert.assertTrue(result);
         }
         catch (HashingException e) {
             e.printStackTrace();
@@ -65,14 +65,12 @@ public class PasswordHashServiceTest {
         try {
             String hashStr = hashService.getHash(TEST_PASSWORD_1);
             boolean result = hashService.isMatching(hashStr, TEST_PASSWORD_2);
-            Assert.assertEquals(false, result);
+            Assert.assertFalse(result);
         }
         catch (HashingException e) {
             e.printStackTrace();
             Assert.fail();
         }
     }
-
-
 
 }
