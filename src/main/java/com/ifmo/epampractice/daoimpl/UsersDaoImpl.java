@@ -51,6 +51,9 @@ public class UsersDaoImpl implements UsersDao {
             Statement statement = connection.createStatement(
                     ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
             ResultSet resultSet = statement.executeQuery(GET_QUERY);
+            if (!resultSet.next()) {
+                return null;
+            }
             return entityFromResultSet(resultSet);
         }
         catch (SQLException e) {
@@ -72,7 +75,6 @@ public class UsersDaoImpl implements UsersDao {
         catch (SQLException e) {
             e.printStackTrace();
             //TODO: use logger when it will be set up.
-            //TODO: throw exception? (need to update interface for this)
         }
     }
 
@@ -87,7 +89,6 @@ public class UsersDaoImpl implements UsersDao {
         catch (SQLException e) {
             e.printStackTrace();
             //TODO: use logger when it will be set up.
-            //TODO: throw exception? (need to update interface for this)
         }
     }
 
@@ -102,7 +103,6 @@ public class UsersDaoImpl implements UsersDao {
         catch (SQLException e) {
             e.printStackTrace();
             //TODO: use logger when it will be set up.
-            //TODO: throw exception? (need to update interface for this)
         }
     }
 
