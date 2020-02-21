@@ -7,20 +7,19 @@ import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 
 public final class SecureString {
+
+    public List<Integer> getChars() {
+        return chars;
+    }
+
     private List<Integer> chars = new ArrayList<>();
     private List<Integer> pad = new ArrayList<>();
     private boolean isDisposed = false;
-
-    public SecureString() {}
-    public SecureString(char[] str) {
-        append(str);
-    }
+    private  SecureRandom rand = new SecureRandom();
 
     public void append(char[] str) {
-        SecureRandom rand = new SecureRandom();
         for (char c : str) {
             int padValue = rand.nextInt();
             pad.add(padValue);
@@ -47,7 +46,7 @@ public final class SecureString {
         return chars.size();
     }
 
-    public char charAt(int index) {
+    private char charAt(int index) {
         return (char)(chars.get(index) ^ pad.get(index));
     }
 

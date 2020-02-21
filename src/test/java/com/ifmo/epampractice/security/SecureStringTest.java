@@ -1,21 +1,30 @@
 package com.ifmo.epampractice.security;
 
+
 import org.junit.Assert;
 import org.junit.Test;
+import org.mockito.Mockito;
+import org.mockito.internal.util.reflection.FieldSetter;
 
 import java.nio.charset.StandardCharsets;
+import java.security.SecureRandom;
 
 public class SecureStringTest {
 
     @Test
-    public void stringValueTest() {
+    public void stringValueTest() throws NoSuchFieldException {
         char[] chars = new char[]{'n', 'i', 'c', 'e'};
-        SecureString str = new SecureString(chars);
+        SecureString str = new SecureString();
+        SecureRandom random = Mockito.mock(SecureRandom.class);
+        FieldSetter.setField(str, str.getClass().getDeclaredField("rand"), random);
+        Mockito.when(random.nextInt()).thenReturn(1);
+
+        str.append(chars);
 
         Assert.assertEquals(chars.length, str.getLength());
 
         for (int i = 0; i < str.getLength(); i++) {
-            Assert.assertEquals(chars[i], str.charAt(i));
+            Assert.assertEquals(chars[i], (byte) (str.getChars().get(i) ^ 1));
         }
     }
 
@@ -62,7 +71,7 @@ public class SecureStringTest {
         SecureString str1 = new SecureString(chars);
         SecureString str2 = new SecureString(chars);
 
-        Assert.assertTrue(str1.equals(str2));
+        Assert.assertEquals(str1, str2);
         Assert.assertEquals(str1.hashCode(), str2.hashCode());
     }
 
@@ -74,7 +83,7 @@ public class SecureStringTest {
         SecureString str1 = new SecureString(chars1);
         SecureString str2 = new SecureString(chars2);
 
-        Assert.assertFalse(str1.equals(str2));
+        Assert.assertNotEquals(str1, str2);
 
         // Formally, there's no guarantee string hashes will always be different.
         // However, in such simple case as this (two short strings of same size) we can expect this.
