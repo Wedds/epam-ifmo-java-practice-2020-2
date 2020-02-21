@@ -121,7 +121,7 @@ CREATE TABLE Car_damage (
     Description text NOT NULL,
     Accident_date date NOT NULL,
     Severity int NOT NULL,
-    Repair_cost int NOT NULL,
+    Repair_cost numeric NOT NULL,
     Status e_status_damage NOT NULL
 );
 
