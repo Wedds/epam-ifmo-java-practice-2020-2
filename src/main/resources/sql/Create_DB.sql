@@ -6,7 +6,7 @@ CREATE TYPE e_role_users AS ENUM (
 );
 
 CREATE TABLE Passport (
-    Id int PRIMARY KEY,
+    Id serial PRIMARY KEY,
     Issue_country text NOT NULL,
     Issuer text,
     Issue_date date NOT NULL,
@@ -15,7 +15,7 @@ CREATE TABLE Passport (
 );
 
 CREATE TABLE Driving_license (
-    Id int PRIMARY KEY,
+    Id serial PRIMARY KEY,
     Issue_date date NOT NULL,
     Expiration_date date,
     Serial_number text NOT NULL
@@ -44,7 +44,7 @@ CREATE TABLE Users (
 );
 
 CREATE TABLE Car_model (
-    Id int PRIMARY KEY,
+    Id serial PRIMARY KEY,
     Brand_name text NOT NULL,
     Model_name text NOT NULL,
     Price_per_hour numeric NOT NULL
@@ -53,7 +53,7 @@ CREATE TABLE Car_model (
 CREATE TYPE e_status_car as ENUM ( 'broken', 'taken', 'free' );
 
 CREATE TABLE Car (
-    Id int PRIMARY KEY,
+    Id serial PRIMARY KEY,
     Model_id int NOT NULL
         REFERENCES Car_model(Id)
         ON DELETE NO ACTION
@@ -113,7 +113,7 @@ CREATE TYPE e_status_damage AS ENUM (
 );
 
 CREATE TABLE Car_damage (
-    Id int PRIMARY KEY,
+    Id serial PRIMARY KEY,
     Order_id int NOT NULL
         REFERENCES Orders (Id)
         ON DELETE CASCADE
