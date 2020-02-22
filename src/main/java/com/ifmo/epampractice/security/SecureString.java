@@ -3,21 +3,17 @@ package com.ifmo.epampractice.security;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public final class SecureString {
-
-    public List<Integer> getChars() {
-        return chars;
-    }
-
     private List<Integer> chars = new ArrayList<>();
     private List<Integer> pad = new ArrayList<>();
     private boolean isDisposed = false;
-    private  SecureRandom rand = new SecureRandom();
+    private SecureRandom rand = new SecureRandom();
 
     public void append(char[] str) {
         for (char c : str) {
@@ -42,7 +38,7 @@ public final class SecureString {
         return isDisposed;
     }
 
-    public int getLength() {
+    private int getLength() {
         return chars.size();
     }
 

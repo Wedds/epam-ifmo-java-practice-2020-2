@@ -31,7 +31,7 @@ public class PasswordHashServiceImpl implements PasswordHashService {
         byte[] passwordBytes = password.getBytes(StandardCharsets.US_ASCII);
         byte[] passwordHashBytes = getHash(passwordBytes, saltBytes);
 
-        Arrays.fill(passwordBytes, (byte) 0); // Clear password for security reasons
+        clearSensitiveData(passwordBytes);
 
         return new String(saltBytes, StandardCharsets.US_ASCII) +
                 SALT_SEPARATOR +
@@ -57,7 +57,7 @@ public class PasswordHashServiceImpl implements PasswordHashService {
         byte[] passwordBytes = password.getBytes(StandardCharsets.US_ASCII);
         byte[] passwordHashBytes = getHash(passwordBytes, saltBytes);
 
-        Arrays.fill(passwordBytes, (byte) 0); // Clear password for security reasons
+        clearSensitiveData(passwordBytes);
 
         return Arrays.equals(hashBytes, passwordHashBytes);
     }
@@ -67,10 +67,7 @@ public class PasswordHashServiceImpl implements PasswordHashService {
         byte[] saltBytes = new byte[16];
         rand.nextBytes(saltBytes);
 
-        // Ensure salt string only contains allowed letters
-        for (int i = 0; i < saltBytes.length; i++) {
-            saltBytes[i] = ensureIsInAlphabet(saltBytes[i]);
-        }
+        ensureIsInAlphabet(saltBytes);
         return saltBytes;
     }
 
@@ -80,15 +77,21 @@ public class PasswordHashServiceImpl implements PasswordHashService {
             md.update(salt);
             byte[] hashBytes = md.digest(input);
 
-            // Ensure hash string only contains allowed letters
-            for (int i = 0; i < hashBytes.length; i++) {
-                hashBytes[i] = ensureIsInAlphabet(hashBytes[i]);
-            }
-
+            ensureIsInAlphabet(hashBytes);
             return hashBytes;
         }
         catch (NoSuchAlgorithmException e) {
             throw new HashingException("Hashing algorithm not found: " + HASH_ALGORITHM, e);
+        }
+    }
+
+    private void clearSensitiveData(byte[] data) {
+        Arrays.fill(data, (byte) 0);
+    }
+
+    private void ensureIsInAlphabet(byte[] bytes) {
+        for (int i = 0; i < bytes.length; i++) {
+            bytes[i] = ensureIsInAlphabet(bytes[i]);
         }
     }
 

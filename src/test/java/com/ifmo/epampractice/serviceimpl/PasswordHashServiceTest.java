@@ -12,7 +12,8 @@ public class PasswordHashServiceTest {
 
     @Test
     public void resultingHashTest() {
-        final SecureString testPassword = new SecureString(
+        final SecureString testPassword = new SecureString();
+        testPassword.append(
                 new char[] { 'h', 'e', 'l', 'l', 'o', 'w', 'o', 'r', 'l', 'd', '1', '2', '3' }
         );
         PasswordHashService hashService = new PasswordHashServiceImpl();
@@ -34,7 +35,8 @@ public class PasswordHashServiceTest {
 
     @Test
     public void validPasswordAuthTest() {
-        final SecureString testPassword = new SecureString(
+        final SecureString testPassword = new SecureString();
+        testPassword.append(
                 new char[] { 'h', 'e', 'l', 'l', 'o', 'w', 'o', 'r', 'l', 'd', '1', '2', '3' }
         );
 
@@ -53,10 +55,12 @@ public class PasswordHashServiceTest {
 
     @Test
     public void invalidPasswordAuthTest() {
-        final SecureString testPassword1 = new SecureString(
+        final SecureString testPassword1 = new SecureString();
+        testPassword1.append(
                 new char[] { 'h', 'e', 'l', 'l', 'o', 'w', 'o', 'r', 'l', 'd', '1', '2', '3' }
         );
-        final SecureString testPassword2 = new SecureString(
+        final SecureString testPassword2 = new SecureString();
+        testPassword2.append(
                 new char[] { 'w', 'r', 'o', 'n', 'g', 'p', 'a', 's', 's' }
         );
 

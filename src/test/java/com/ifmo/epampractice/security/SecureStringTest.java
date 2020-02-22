@@ -3,46 +3,24 @@ package com.ifmo.epampractice.security;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.mockito.Mockito;
-import org.mockito.internal.util.reflection.FieldSetter;
 
 import java.nio.charset.StandardCharsets;
-import java.security.SecureRandom;
+import java.util.Arrays;
 
 public class SecureStringTest {
-
-    @Test
-    public void stringValueTest() throws NoSuchFieldException {
-        char[] chars = new char[]{'n', 'i', 'c', 'e'};
-        SecureString str = new SecureString();
-        SecureRandom random = Mockito.mock(SecureRandom.class);
-        FieldSetter.setField(str, str.getClass().getDeclaredField("rand"), random);
-        Mockito.when(random.nextInt()).thenReturn(1);
-
-        str.append(chars);
-
-        Assert.assertEquals(chars.length, str.getLength());
-
-        for (int i = 0; i < str.getLength(); i++) {
-            Assert.assertEquals(chars[i], (byte) (str.getChars().get(i) ^ 1));
-        }
-    }
-
     @Test
     public void stringDisposeTest() {
         char[] chars = new char[] { 'n', 'i', 'c', 'e' };
-        SecureString str = new SecureString(chars);
-        str.dispose();
+        SecureString str1 = new SecureString();
+        str1.append(chars);
+        str1.dispose();
 
-        Assert.assertTrue(str.isDisposed());
+        Assert.assertTrue(str1.isDisposed());
 
-        boolean areAllEqual = true;
-        for (int i = 0; i < str.getLength(); i++) {
-            if (str.charAt(i) != chars[i])
-                areAllEqual = false;
-        }
-
-        Assert.assertFalse(areAllEqual);
+        String str2 = String.valueOf(chars);
+        byte[] bytes1 = str1.getBytes(StandardCharsets.US_ASCII);
+        byte[] bytes2 = str2.getBytes(StandardCharsets.US_ASCII);
+        Assert.assertFalse(Arrays.equals(bytes1, bytes2)); // There's no assertArrayNotEquals()
     }
 
     @Test
@@ -50,26 +28,25 @@ public class SecureStringTest {
         char[] chars1 = new char[] { 'n', 'i', 'c', 'e' };
         char[] chars2 = new char[] { ' ', 'd', 'a', 'y' };
 
-        SecureString str = new SecureString(chars1);
-        Assert.assertEquals(chars1.length, str.getLength());
+        SecureString str1 = new SecureString();
+        str1.append(chars1);
+        str1.append(chars2);
 
-        str.append(chars2);
-        Assert.assertEquals(chars1.length + chars2.length, str.getLength());
+        String str2 = String.valueOf(chars1) + String.valueOf(chars2);
 
-        for (int i = 0; i < chars1.length; i++) {
-            Assert.assertEquals(chars1[i], str.charAt(i));
-        }
-        for (int i = 0; i < chars2.length; i++) {
-            Assert.assertEquals(chars2[i], str.charAt(i + chars1.length));
-        }
+        byte[] bytes1 = str1.getBytes(StandardCharsets.US_ASCII);
+        byte[] bytes2 = str2.getBytes(StandardCharsets.US_ASCII);
+        Assert.assertArrayEquals(bytes1, bytes2);
     }
 
     @Test
     public void equalStringsTest() {
         char[] chars = new char[] { 'n', 'i', 'c', 'e' };
 
-        SecureString str1 = new SecureString(chars);
-        SecureString str2 = new SecureString(chars);
+        SecureString str1 = new SecureString();
+        SecureString str2 = new SecureString();
+        str1.append(chars);
+        str2.append(chars);
 
         Assert.assertEquals(str1, str2);
         Assert.assertEquals(str1.hashCode(), str2.hashCode());
@@ -80,8 +57,10 @@ public class SecureStringTest {
         char[] chars1 = new char[] { 'n', 'i', 'c', 'e' };
         char[] chars2 = new char[] { ' ', 'd', 'a', 'y' };
 
-        SecureString str1 = new SecureString(chars1);
-        SecureString str2 = new SecureString(chars2);
+        SecureString str1 = new SecureString();
+        SecureString str2 = new SecureString();
+        str1.append(chars1);
+        str2.append(chars2);
 
         Assert.assertNotEquals(str1, str2);
 
@@ -93,9 +72,11 @@ public class SecureStringTest {
     @Test
     public void getBytesTest() {
         char[] chars = new char[] { 'n', 'i', 'c', 'e' };
+        SecureString str = new SecureString();
+        str.append(chars);
 
         byte[] bytes1 = new String(chars).getBytes(StandardCharsets.US_ASCII);
-        byte[] bytes2 = new SecureString(chars).getBytes(StandardCharsets.US_ASCII);
+        byte[] bytes2 = str.getBytes(StandardCharsets.US_ASCII);
 
         Assert.assertArrayEquals(bytes1, bytes2);
     }
