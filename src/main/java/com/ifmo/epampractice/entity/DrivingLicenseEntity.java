@@ -4,14 +4,14 @@ import java.time.LocalDate;
 import java.util.Date;
 import java.util.Objects;
 
-public class DrivingLicense {
+public class DrivingLicenseEntity {
 
     private int id;
     private LocalDate issueDate;
     private LocalDate expirationDate;
     private String serialNumber;
 
-    public DrivingLicense(int id, LocalDate issueDate, LocalDate expirationDate, String serialNumber) {
+    public DrivingLicenseEntity(int id, LocalDate issueDate, LocalDate expirationDate, String serialNumber) {
         this.id = id;
         this.issueDate = issueDate;
         this.expirationDate = expirationDate;
@@ -37,9 +37,9 @@ public class DrivingLicense {
     @Override
     public boolean equals(Object o) {
         if (this == o) { return true; }
-        if (!(o instanceof DrivingLicense)) { return false; }
+        if (!(o instanceof DrivingLicenseEntity)) { return false; }
 
-        DrivingLicense that = (DrivingLicense) o;
+        DrivingLicenseEntity that = (DrivingLicenseEntity) o;
 
         return (
                 id == that.id &&
