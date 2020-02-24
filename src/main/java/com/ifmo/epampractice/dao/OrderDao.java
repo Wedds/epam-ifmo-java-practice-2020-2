@@ -17,11 +17,11 @@ public interface OrderDao extends BasicDaoInterface<OrderEntity> {
     OrderEntity get(int id);
 
     @Override
-    void update(OrderEntity o);
+    void update(OrderEntity entity);
 
     @Override
-    void delete(OrderEntity o);
+    void delete(OrderEntity entity);
 
     @Override
-    void save(OrderEntity o);
+    void save(OrderEntity entity);
 }
