@@ -47,7 +47,6 @@ public class OrderDaoImpl implements OrderDao {
     @Override
     public OrderEntity get(int id) {
         OrderEntity order;
-        DBConnectorInterface dbConnector = DBConnectorPostgres.getInstance();
         try (Connection connection = dbConnector.getConnection();
              PreparedStatement statement = connection.prepareStatement(GET_QUERY,
                      ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
@@ -64,7 +63,6 @@ public class OrderDaoImpl implements OrderDao {
 
     @Override
     public void update(OrderEntity order) {
-        DBConnectorInterface dbConnector = DBConnectorPostgres.getInstance();
         try (Connection connection = dbConnector.getConnection();
              PreparedStatement statement = connection.prepareStatement(UPDATE_QUERY,
                      ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE)) {
@@ -80,7 +78,6 @@ public class OrderDaoImpl implements OrderDao {
 
     @Override
     public void delete(OrderEntity order) {
-        DBConnectorInterface dbConnector = DBConnectorPostgres.getInstance();
         try (Connection connection = dbConnector.getConnection();
              PreparedStatement statement = connection.prepareStatement(DELETE_QUERY,
                      ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE)) {
@@ -94,7 +91,6 @@ public class OrderDaoImpl implements OrderDao {
 
     @Override
     public void save(OrderEntity order) {
-        DBConnectorInterface dbConnector = DBConnectorPostgres.getInstance();
         try (Connection connection = dbConnector.getConnection();
              PreparedStatement statement = connection.prepareStatement(SAVE_QUERY,
                      ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE)) {
