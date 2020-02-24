@@ -8,7 +8,12 @@ import com.ifmo.epampractice.enums.UserRole;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,7 +29,7 @@ public class UsersDaoImpl implements UsersDao {
             "Signup_date, Pass_id, Driving_license_id, Contact_phone, Address, Is_blocked, " +
             "Reputation) VALUES (?, ?, ?::e_role_users, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-    private static final Logger logger = LogManager.getLogger(UsersDaoImpl.class);
+    private static final Logger LOGGER = LogManager.getLogger(UsersDaoImpl.class);
 
     private DBConnectorInterface dbConnector = DBConnectorPostgres.getInstance();
 
@@ -40,9 +45,8 @@ public class UsersDaoImpl implements UsersDao {
             while (resultSet.next()) {
                 users.add(entityFromResultSet(resultSet));
             }
-        }
-        catch (SQLException e) {
-            logger.error(e);
+        } catch (SQLException e) {
+            LOGGER.error(e);
         }
 
         return users;
@@ -60,9 +64,8 @@ public class UsersDaoImpl implements UsersDao {
                     return entityFromResultSet(resultSet);
                 }
             }
-        }
-        catch (SQLException e) {
-            logger.error(e);
+        } catch (SQLException e) {
+            LOGGER.error(e);
         }
 
         return null;
@@ -76,9 +79,8 @@ public class UsersDaoImpl implements UsersDao {
             setStatementFields(statement, entity);
             statement.setInt(13, entity.getId());
             statement.execute();
-        }
-        catch (SQLException e) {
-            logger.error(e);
+        } catch (SQLException e) {
+            LOGGER.error(e);
         }
     }
 
@@ -89,9 +91,8 @@ public class UsersDaoImpl implements UsersDao {
         ) {
             statement.setInt(1, entity.getId());
             statement.execute();
-        }
-        catch (SQLException e) {
-            logger.error(e);
+        } catch (SQLException e) {
+            LOGGER.error(e);
         }
     }
 
@@ -102,9 +103,8 @@ public class UsersDaoImpl implements UsersDao {
         ) {
             setStatementFields(statement, entity);
             statement.execute();
-        }
-        catch (SQLException e) {
-            logger.error(e);
+        } catch (SQLException e) {
+            LOGGER.error(e);
         }
     }
 
