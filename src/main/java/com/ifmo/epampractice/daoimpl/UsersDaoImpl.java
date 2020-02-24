@@ -5,6 +5,8 @@ import com.ifmo.epampractice.dao.DBConnectorPostgres;
 import com.ifmo.epampractice.dao.UsersDao;
 import com.ifmo.epampractice.entity.UsersEntity;
 import com.ifmo.epampractice.enums.UserRole;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -22,6 +24,8 @@ public class UsersDaoImpl implements UsersDao {
             "Signup_date, Pass_id, Driving_license_id, Contact_phone, Address, Is_blocked, " +
             "Reputation) VALUES (?, ?, ?::e_role_users, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
+    private static final Logger logger = LogManager.getLogger(UsersDaoImpl.class);
+
     private DBConnectorInterface dbConnector = DBConnectorPostgres.getInstance();
 
     @Override
@@ -38,8 +42,7 @@ public class UsersDaoImpl implements UsersDao {
             }
         }
         catch (SQLException e) {
-            e.printStackTrace();
-            //TODO: use logger when it will be set up.
+            logger.error(e);
         }
 
         return users;
@@ -59,8 +62,7 @@ public class UsersDaoImpl implements UsersDao {
             }
         }
         catch (SQLException e) {
-            e.printStackTrace();
-            //TODO: use logger when it will be set up.
+            logger.error(e);
         }
 
         return null;
@@ -76,8 +78,7 @@ public class UsersDaoImpl implements UsersDao {
             statement.execute();
         }
         catch (SQLException e) {
-            e.printStackTrace();
-            //TODO: use logger when it will be set up.
+            logger.error(e);
         }
     }
 
@@ -90,8 +91,7 @@ public class UsersDaoImpl implements UsersDao {
             statement.execute();
         }
         catch (SQLException e) {
-            e.printStackTrace();
-            //TODO: use logger when it will be set up.
+            logger.error(e);
         }
     }
 
@@ -104,8 +104,7 @@ public class UsersDaoImpl implements UsersDao {
             statement.execute();
         }
         catch (SQLException e) {
-            e.printStackTrace();
-            //TODO: use logger when it will be set up.
+            logger.error(e);
         }
     }
 
