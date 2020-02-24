@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="debug">
+    <Appenders>
+    <Appender type="File" name="File" fileName="logs/log_file.log">
+        <Layout type="PatternLayout">
+            <Pattern>%d %p %C{1.} [%t] %m%n</Pattern>
+        </Layout>
+    </Appender>
+    </Appenders>
+    <Loggers>
+        <Root level="trace">
+            <AppenderRef ref="file" level="INFO"/>
+        </Root>
+    </Loggers>
+</Configuration>
