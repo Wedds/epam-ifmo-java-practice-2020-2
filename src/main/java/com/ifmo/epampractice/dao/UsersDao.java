@@ -9,9 +9,9 @@ public interface UsersDao extends BasicDaoInterface<UsersEntity> {
 
     UsersEntity get(int id);
 
-    void update(UsersEntity o);
+    void update(UsersEntity entity);
 
-    void delete(UsersEntity o);
+    void delete(UsersEntity entity);
 
-    void save(UsersEntity o);
+    void save(UsersEntity entity);
 }

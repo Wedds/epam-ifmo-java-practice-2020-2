@@ -1,6 +1,5 @@
 package com.ifmo.epampractice.daoimpl;
 
-import com.ifmo.epampractice.dao.BasicDaoInterface;
 import com.ifmo.epampractice.dao.DBConnectorInterface;
 import com.ifmo.epampractice.dao.DBConnectorPostgres;
 import com.ifmo.epampractice.dao.UsersDao;
@@ -23,52 +22,55 @@ public class UsersDaoImpl implements UsersDao {
             "Signup_date, Pass_id, Driving_license_id, Contact_phone, Address, Is_blocked, " +
             "Reputation) VALUES (?, ?, ?::e_role_users, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
+    private DBConnectorInterface dbConnector = DBConnectorPostgres.getInstance();
+
     @Override
     public List<UsersEntity> getAll() {
         List<UsersEntity> users = new ArrayList<>();
 
-        DBConnectorInterface dbConnector = DBConnectorPostgres.getInstance();
-        try (Connection connection = dbConnector.getConnection()) {
-            Statement statement = connection.createStatement(
-                    ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
-            ResultSet resultSet = statement.executeQuery(GET_ALL_QUERY);
+        try (Connection connection = dbConnector.getConnection();
+             Statement statement = connection.createStatement(
+                     ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
+             ResultSet resultSet = statement.executeQuery(GET_ALL_QUERY)
+        ) {
             while (resultSet.next()) {
                 users.add(entityFromResultSet(resultSet));
             }
-            return users;
         }
         catch (SQLException e) {
             e.printStackTrace();
             //TODO: use logger when it will be set up.
-            return users;
         }
+
+        return users;
     }
 
     @Override
     public UsersEntity get(int id) {
-        DBConnectorInterface dbConnector = DBConnectorPostgres.getInstance();
-        try (Connection connection = dbConnector.getConnection()) {
-            PreparedStatement statement = connection.prepareStatement(GET_QUERY,
-                    ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
+        try (Connection connection = dbConnector.getConnection();
+             PreparedStatement statement = connection.prepareStatement(GET_QUERY,
+                     ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY)
+        ) {
             statement.setInt(1, id);
-            ResultSet resultSet = statement.executeQuery();
-            if (!resultSet.next()) {
-                return null;
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    return entityFromResultSet(resultSet);
+                }
             }
-            return entityFromResultSet(resultSet);
         }
         catch (SQLException e) {
             e.printStackTrace();
             //TODO: use logger when it will be set up.
-            return null;
         }
+
+        return null;
     }
 
     @Override
     public void update(UsersEntity entity) {
-        DBConnectorInterface dbConnector = DBConnectorPostgres.getInstance();
-        try (Connection connection = dbConnector.getConnection()) {
-            PreparedStatement statement = connection.prepareStatement(UPDATE_QUERY);
+        try (Connection connection = dbConnector.getConnection();
+             PreparedStatement statement = connection.prepareStatement(UPDATE_QUERY)
+        ) {
             setStatementFields(statement, entity);
             statement.setInt(13, entity.getId());
             statement.execute();
@@ -81,9 +83,9 @@ public class UsersDaoImpl implements UsersDao {
 
     @Override
     public void delete(UsersEntity entity) {
-        DBConnectorInterface dbConnector = DBConnectorPostgres.getInstance();
-        try (Connection connection = dbConnector.getConnection()) {
-            PreparedStatement statement = connection.prepareStatement(DELETE_QUERY);
+        try (Connection connection = dbConnector.getConnection();
+             PreparedStatement statement = connection.prepareStatement(DELETE_QUERY)
+        ) {
             statement.setInt(1, entity.getId());
             statement.execute();
         }
@@ -95,9 +97,9 @@ public class UsersDaoImpl implements UsersDao {
 
     @Override
     public void save(UsersEntity entity) {
-        DBConnectorInterface dbConnector = DBConnectorPostgres.getInstance();
-        try (Connection connection = dbConnector.getConnection()) {
-            PreparedStatement statement = connection.prepareStatement(INSERT_QUERY);
+        try (Connection connection = dbConnector.getConnection();
+             PreparedStatement statement = connection.prepareStatement(INSERT_QUERY)
+        ) {
             setStatementFields(statement, entity);
             statement.execute();
         }
