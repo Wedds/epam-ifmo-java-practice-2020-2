@@ -17,11 +17,11 @@ public interface InvoiceDao extends BasicDaoInterface<InvoiceEntity> {
     InvoiceEntity get(int id);
 
     @Override
-    void update(InvoiceEntity o);
+    void update(InvoiceEntity entity);
 
     @Override
-    void delete(InvoiceEntity o);
+    void delete(InvoiceEntity entity);
 
     @Override
-    void save(InvoiceEntity o);
+    void save(InvoiceEntity entity);
 }

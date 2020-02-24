@@ -21,6 +21,83 @@ public class InvoiceDaoImpl implements InvoiceDao {
             "PAYMENT_DATE, TOTAL_PRICE, STATUS) = (?, ?, ?, ?, ?::e_status_invoice) WHERE ID = ?";
     private static final String DELETE_QUERY = "DELETE FROM INVOICE WHERE ID = ?";
 
+    private DBConnectorInterface dbConnector = DBConnectorPostgres.getInstance();
+
+    @Override
+    public List<InvoiceEntity> getAll() {
+        List<InvoiceEntity> invoices = new ArrayList<>();
+        try (Connection connection = dbConnector.getConnection();
+             Statement statement = connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,
+                     ResultSet.CONCUR_READ_ONLY);
+             ResultSet resultSet = statement.executeQuery(GET_ALL_QUERY)) {
+            while (resultSet.next()) {
+                InvoiceEntity currentInvoice = parseRow(resultSet);
+                invoices.add(currentInvoice);
+            }
+            return invoices;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public InvoiceEntity get(int id) {
+        InvoiceEntity invoice;
+        try (Connection connection = dbConnector.getConnection();
+             PreparedStatement statement = connection.prepareStatement(GET_QUERY,
+                     ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
+             ResultSet resultSet = statement.executeQuery()) {
+            statement.setInt(1, id);
+            resultSet.first();
+            invoice = parseRow(resultSet);
+            return invoice;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void update(InvoiceEntity invoice) {
+        try (Connection connection = dbConnector.getConnection();
+             PreparedStatement statement = connection.prepareStatement(UPDATE_QUERY,
+                     ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE)) {
+            setInvoiceFieldsToStatement(invoice, statement);
+            statement.setInt(6, invoice.getId());
+            statement.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void delete(InvoiceEntity invoice) {
+        try (Connection connection = dbConnector.getConnection();
+             PreparedStatement statement = connection.prepareStatement(DELETE_QUERY,
+                     ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE)) {
+            statement.setInt(1, invoice.getId());
+            statement.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void save(InvoiceEntity invoice) {
+        try (Connection connection = dbConnector.getConnection();
+             PreparedStatement statement = connection.prepareStatement(SAVE_QUERY,
+                     ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE)) {
+            setInvoiceFieldsToStatement(invoice, statement);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+    }
+
     private InvoiceEntity parseRow(ResultSet resultSet) throws SQLException {
         int id = resultSet.getInt("id");
         int orderId = resultSet.getInt("order_id");
@@ -40,85 +117,5 @@ public class InvoiceDaoImpl implements InvoiceDao {
         statement.setDate(3, new java.sql.Date(invoice.getPaymentDate().getTime()));
         statement.setBigDecimal(4, invoice.getTotalPrice());
         statement.setString(5, invoice.getStatus().name().toLowerCase());
-    }
-
-    @Override
-    public List<InvoiceEntity> getAll() {
-        List<InvoiceEntity> invoices = new ArrayList<>();
-        DBConnectorInterface dbConnector = DBConnectorPostgres.getInstance();
-        try (Connection connection = dbConnector.getConnection()) {
-            Statement statement = connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,
-                    ResultSet.CONCUR_READ_ONLY);
-            ResultSet resultSet = statement.executeQuery(GET_ALL_QUERY);
-            while (resultSet.next()) {
-                InvoiceEntity currentInvoice = parseRow(resultSet);
-                invoices.add(currentInvoice);
-            }
-            return invoices;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            throw new RuntimeException(e);
-        }
-    }
-
-    @Override
-    public InvoiceEntity get(int id) {
-        InvoiceEntity invoice;
-        DBConnectorInterface dbConnector = DBConnectorPostgres.getInstance();
-        try (Connection connection = dbConnector.getConnection()) {
-            PreparedStatement statement = connection.prepareStatement(GET_QUERY,
-                    ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
-            statement.setInt(1, id);
-            ResultSet resultSet = statement.executeQuery();
-            resultSet.first();
-            invoice = parseRow(resultSet);
-            return invoice;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            throw new RuntimeException(e);
-        }
-    }
-
-    @Override
-    public void update(InvoiceEntity invoice) {
-        DBConnectorInterface dbConnector = DBConnectorPostgres.getInstance();
-        try (Connection connection = dbConnector.getConnection()) {
-            PreparedStatement statement = connection.prepareStatement(UPDATE_QUERY,
-                    ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
-            setInvoiceFieldsToStatement(invoice, statement);
-            statement.setInt(6, invoice.getId());
-            statement.execute();
-        } catch (SQLException e) {
-            e.printStackTrace();
-            throw new RuntimeException(e);
-        }
-    }
-
-    @Override
-    public void delete(InvoiceEntity invoice) {
-        DBConnectorInterface dbConnector = DBConnectorPostgres.getInstance();
-        try (Connection connection = dbConnector.getConnection()) {
-            PreparedStatement statement = connection.prepareStatement(DELETE_QUERY,
-                    ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
-            statement.setInt(1, invoice.getId());
-            statement.execute();
-        } catch (SQLException e) {
-            e.printStackTrace();
-            throw new RuntimeException(e);
-        }
-    }
-
-    @Override
-    public void save(InvoiceEntity invoice) {
-        DBConnectorInterface dbConnector = DBConnectorPostgres.getInstance();
-        try (Connection connection = dbConnector.getConnection()) {
-            PreparedStatement statement = connection.prepareStatement(SAVE_QUERY,
-                    ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
-            setInvoiceFieldsToStatement(invoice, statement);
-            statement.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-            throw new RuntimeException(e);
-        }
     }
 }
