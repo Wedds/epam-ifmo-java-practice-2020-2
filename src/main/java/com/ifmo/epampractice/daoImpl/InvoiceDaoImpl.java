@@ -5,6 +5,8 @@ import com.ifmo.epampractice.dao.DBConnectorPostgres;
 import com.ifmo.epampractice.dao.InvoiceDao;
 import com.ifmo.epampractice.entity.InvoiceEntity;
 import com.ifmo.epampractice.enums.InvoiceStatus;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.math.BigDecimal;
 import java.sql.*;
@@ -21,6 +23,7 @@ public class InvoiceDaoImpl implements InvoiceDao {
             "PAYMENT_DATE, TOTAL_PRICE, STATUS) = (?, ?, ?, ?, ?::e_status_invoice) WHERE ID = ?";
     private static final String DELETE_QUERY = "DELETE FROM INVOICE WHERE ID = ?";
 
+    private static final Logger log = LogManager.getLogger(InvoiceDaoImpl.class);
     private DBConnectorInterface dbConnector = DBConnectorPostgres.getInstance();
 
     @Override
@@ -36,7 +39,7 @@ public class InvoiceDaoImpl implements InvoiceDao {
             }
             return invoices;
         } catch (SQLException e) {
-            e.printStackTrace();
+            log.error(e);
             throw new RuntimeException(e);
         }
     }
@@ -53,7 +56,7 @@ public class InvoiceDaoImpl implements InvoiceDao {
             invoice = parseRow(resultSet);
             return invoice;
         } catch (SQLException e) {
-            e.printStackTrace();
+            log.error(e);
             throw new RuntimeException(e);
         }
     }
@@ -67,7 +70,7 @@ public class InvoiceDaoImpl implements InvoiceDao {
             statement.setInt(6, invoice.getId());
             statement.execute();
         } catch (SQLException e) {
-            e.printStackTrace();
+            log.error(e);
             throw new RuntimeException(e);
         }
     }
@@ -80,7 +83,7 @@ public class InvoiceDaoImpl implements InvoiceDao {
             statement.setInt(1, invoice.getId());
             statement.execute();
         } catch (SQLException e) {
-            e.printStackTrace();
+            log.error(e);
             throw new RuntimeException(e);
         }
     }
@@ -93,7 +96,7 @@ public class InvoiceDaoImpl implements InvoiceDao {
             setInvoiceFieldsToStatement(invoice, statement);
             statement.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            log.error(e);
             throw new RuntimeException(e);
         }
     }
