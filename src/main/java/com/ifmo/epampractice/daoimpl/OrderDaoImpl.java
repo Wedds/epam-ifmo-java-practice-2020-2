@@ -23,7 +23,7 @@ public class OrderDaoImpl implements OrderDao {
             "rent_start_date, rent_end_date, discount) = (?, ?, ?, ?::e_status_order, ?, ?, ?) WHERE ID = ?";
     private static final String DELETE_QUERY = "DELETE FROM ORDERS WHERE ID = ?";
 
-    private static final Logger log = LogManager.getLogger(OrderDaoImpl.class);
+    private static final Logger LOG = LogManager.getLogger(OrderDaoImpl.class);
     private DBConnectorInterface dbConnector = DBConnectorPostgres.getInstance();
 
     @Override
@@ -39,8 +39,8 @@ public class OrderDaoImpl implements OrderDao {
             }
             return orders;
         } catch (SQLException e) {
-            log.error(e);
-            throw new RuntimeException(e);
+            LOG.error(e);
+            return null;
         }
     }
 
@@ -56,8 +56,8 @@ public class OrderDaoImpl implements OrderDao {
             order = parseRow(resultSet);
             return order;
         } catch (SQLException e) {
-            log.error(e);
-            throw new RuntimeException(e);
+            LOG.error(e);
+            return null;
         }
     }
 
@@ -71,8 +71,7 @@ public class OrderDaoImpl implements OrderDao {
             System.out.println(statement);
             statement.execute();
         } catch (SQLException e) {
-            log.error(e);
-            throw new RuntimeException(e);
+            LOG.error(e);
         }
     }
 
@@ -84,8 +83,7 @@ public class OrderDaoImpl implements OrderDao {
             statement.setInt(1, order.getId());
             statement.execute();
         } catch (SQLException e) {
-            log.error(e);
-            throw new RuntimeException(e);
+            LOG.error(e);
         }
     }
 
@@ -97,8 +95,7 @@ public class OrderDaoImpl implements OrderDao {
             setOrderFieldsToStatement(order, statement);
             statement.execute();
         } catch (SQLException e) {
-            log.error(e);
-            throw new RuntimeException(e);
+            LOG.error(e);
         }
     }
 
