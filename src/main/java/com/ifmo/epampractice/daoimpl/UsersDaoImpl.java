@@ -20,7 +20,8 @@ import java.util.List;
 public class UsersDaoImpl implements UsersDao {
 
     private static final String GET_ALL_QUERY = "SELECT * FROM Users";
-    private static final String GET_QUERY = "SELECT * FROM Users WHERE ID = ?";
+    private static final String GET_BY_ID_QUERY = "SELECT * FROM Users WHERE ID = ? LIMIT 1";
+    private static final String GET_BY_EMAIL_QUERY = "SELECT * FROM Users WHERE Email = ? LIMIT 1";
     private static final String UPDATE_QUERY = "UPDATE Users SET (Email, Password_hash, Role, Name, Birth_date, " +
             "Signup_date, Pass_id, Driving_license_id, Contact_phone, Address, Is_blocked, " +
             "Reputation) = (?, ?, ?::e_role_users, ?, ?, ?, ?, ?, ?, ?, ?, ?) WHERE ID = ?";
@@ -55,10 +56,29 @@ public class UsersDaoImpl implements UsersDao {
     @Override
     public UsersEntity get(int id) {
         try (Connection connection = dbConnector.getConnection();
-             PreparedStatement statement = connection.prepareStatement(GET_QUERY,
+             PreparedStatement statement = connection.prepareStatement(GET_BY_ID_QUERY,
                      ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY)
         ) {
             statement.setInt(1, id);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    return entityFromResultSet(resultSet);
+                }
+            }
+        } catch (SQLException e) {
+            LOGGER.error(e);
+        }
+
+        return null;
+    }
+
+    @Override
+    public UsersEntity getByEmail(String email) {
+        try (Connection connection = dbConnector.getConnection();
+             PreparedStatement statement = connection.prepareStatement(GET_BY_EMAIL_QUERY,
+                     ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY)
+        ) {
+            statement.setString(1, email);
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
                     return entityFromResultSet(resultSet);
