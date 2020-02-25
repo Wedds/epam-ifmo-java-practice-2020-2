@@ -1,4 +1,4 @@
-package com.ifmo.epampractice.daoImpl;
+package com.ifmo.epampractice.daoimpl;
 
 import com.ifmo.epampractice.dao.DBConnectorInterface;
 import com.ifmo.epampractice.dao.DBConnectorPostgres;
@@ -11,8 +11,8 @@ import org.apache.logging.log4j.Logger;
 import java.math.BigDecimal;
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
+import java.util.Date;
 
 public class InvoiceDaoImpl implements InvoiceDao {
     private static final String GET_ALL_QUERY = "SELECT * FROM INVOICE";
@@ -23,7 +23,7 @@ public class InvoiceDaoImpl implements InvoiceDao {
             "PAYMENT_DATE, TOTAL_PRICE, STATUS) = (?, ?, ?, ?, ?::e_status_invoice) WHERE ID = ?";
     private static final String DELETE_QUERY = "DELETE FROM INVOICE WHERE ID = ?";
 
-    private static final Logger log = LogManager.getLogger(InvoiceDaoImpl.class);
+    private static final Logger LOG = LogManager.getLogger(InvoiceDaoImpl.class);
     private DBConnectorInterface dbConnector = DBConnectorPostgres.getInstance();
 
     @Override
@@ -39,8 +39,8 @@ public class InvoiceDaoImpl implements InvoiceDao {
             }
             return invoices;
         } catch (SQLException e) {
-            log.error(e);
-            throw new RuntimeException(e);
+            LOG.error(e);
+            return null;
         }
     }
 
@@ -56,8 +56,8 @@ public class InvoiceDaoImpl implements InvoiceDao {
             invoice = parseRow(resultSet);
             return invoice;
         } catch (SQLException e) {
-            log.error(e);
-            throw new RuntimeException(e);
+            LOG.error(e);
+            return null;
         }
     }
 
@@ -70,8 +70,7 @@ public class InvoiceDaoImpl implements InvoiceDao {
             statement.setInt(6, invoice.getId());
             statement.execute();
         } catch (SQLException e) {
-            log.error(e);
-            throw new RuntimeException(e);
+            LOG.error(e);
         }
     }
 
@@ -83,8 +82,7 @@ public class InvoiceDaoImpl implements InvoiceDao {
             statement.setInt(1, invoice.getId());
             statement.execute();
         } catch (SQLException e) {
-            log.error(e);
-            throw new RuntimeException(e);
+            LOG.error(e);
         }
     }
 
@@ -96,8 +94,7 @@ public class InvoiceDaoImpl implements InvoiceDao {
             setInvoiceFieldsToStatement(invoice, statement);
             statement.executeUpdate();
         } catch (SQLException e) {
-            log.error(e);
-            throw new RuntimeException(e);
+            LOG.error(e);
         }
     }
 
