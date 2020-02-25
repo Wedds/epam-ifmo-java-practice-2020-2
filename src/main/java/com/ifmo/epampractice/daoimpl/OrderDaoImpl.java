@@ -68,7 +68,6 @@ public class OrderDaoImpl implements OrderDao {
                      ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE)) {
             setOrderFieldsToStatement(order, statement);
             statement.setInt(8, order.getId());
-            System.out.println(statement);
             statement.execute();
         } catch (SQLException e) {
             LOG.error(e);
