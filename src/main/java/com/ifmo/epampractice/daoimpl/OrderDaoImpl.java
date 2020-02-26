@@ -35,8 +35,8 @@ public class OrderDaoImpl implements OrderDao {
                      ResultSet.CONCUR_READ_ONLY);
              ResultSet resultSet = statement.executeQuery(GET_ALL_QUERY)) {
             while (resultSet.next()) {
-                OrderEntity currentInvoice = parseRow(resultSet);
-                orders.add(currentInvoice);
+                OrderEntity currentOrder = parseRow(resultSet);
+                orders.add(currentOrder);
             }
         } catch (SQLException e) {
             LOG.error(e);
@@ -48,13 +48,14 @@ public class OrderDaoImpl implements OrderDao {
     public List<OrderEntity> getAllByUserId(int userId) {
         List<OrderEntity> orders = new ArrayList<>();
         try (Connection connection = dbConnector.getConnection();
-             PreparedStatement statement = connection.prepareStatement(GET_QUERY,
-                     ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
-             ResultSet resultSet = statement.executeQuery(GET_ALL_BY_USER_ID_QUERY)) {
+             PreparedStatement statement = connection.prepareStatement(GET_ALL_BY_USER_ID_QUERY,
+                     ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY)) {
             statement.setInt(1, userId);
-            while (resultSet.next()) {
-                OrderEntity currentInvoice = parseRow(resultSet);
-                orders.add(currentInvoice);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    OrderEntity currentOrder = parseRow(resultSet);
+                    orders.add(currentOrder);
+                }
             }
         } catch (SQLException e) {
             LOG.error(e);
@@ -67,11 +68,12 @@ public class OrderDaoImpl implements OrderDao {
         OrderEntity order = null;
         try (Connection connection = dbConnector.getConnection();
              PreparedStatement statement = connection.prepareStatement(GET_QUERY,
-                     ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
-             ResultSet resultSet = statement.executeQuery()) {
+                     ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY)) {
             statement.setInt(1, id);
-            resultSet.first();
-            order = parseRow(resultSet);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                resultSet.first();
+                order = parseRow(resultSet);
+            }
         } catch (SQLException e) {
             LOG.error(e);
         }
