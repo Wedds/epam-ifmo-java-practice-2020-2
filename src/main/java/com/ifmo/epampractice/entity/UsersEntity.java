@@ -4,7 +4,6 @@ import com.ifmo.epampractice.enums.UserRole;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class UsersEntity {
@@ -15,7 +14,7 @@ public class UsersEntity {
     private UserRole role;
     private String name;
     private LocalDate birthDate;
-    private LocalDateTime signUpDate;
+    private LocalDate signUpDate;
     private int passId;
     private int drivingLicenseId;
     private String contactPhone;
@@ -24,7 +23,7 @@ public class UsersEntity {
     private BigDecimal reputation;
 
     public UsersEntity(int id, String email, String passwordHash, UserRole role, String name,
-                       LocalDate birthDate, LocalDateTime signUpDate, int passId,
+                       LocalDate birthDate, LocalDate signUpDate, int passId,
                        int drivingLicenseId, String contactPhone, String address,
                        boolean isBlocked, BigDecimal reputation) {
         this.id = id;
@@ -43,7 +42,7 @@ public class UsersEntity {
     }
 
     public UsersEntity(int id, String email, String passwordHash, UserRole role, String name,
-                       LocalDate birthDate, LocalDateTime signUpDate, boolean isBlocked,
+                       LocalDate birthDate, LocalDate signUpDate, boolean isBlocked,
                        BigDecimal reputation) {
         this.id = id;
         this.email = email;
@@ -104,11 +103,11 @@ public class UsersEntity {
         this.birthDate = birthDate;
     }
 
-    public LocalDateTime getSignUpDate() {
+    public LocalDate getSignUpDate() {
         return signUpDate;
     }
 
-    public void setSignUpDate(LocalDateTime signUpDate) {
+    public void setSignUpDate(LocalDate signUpDate) {
         this.signUpDate = signUpDate;
     }
 
