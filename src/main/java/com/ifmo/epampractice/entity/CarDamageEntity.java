@@ -2,6 +2,7 @@ package com.ifmo.epampractice.entity;
 
 import com.ifmo.epampractice.enums.DamageStatus;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Objects;
 
@@ -11,11 +12,11 @@ public class CarDamageEntity {
     private String description;
     private LocalDate accidentDate;
     private int severity;
-    private int repairCost;
+    private BigDecimal repairCost;
     private DamageStatus status;
 
     public CarDamageEntity(int id, int orderId, String description, LocalDate accidentDate,
-                           int severity, int repairCost, DamageStatus status) {
+                           int severity, BigDecimal repairCost, DamageStatus status) {
         this.id = id;
         this.orderId = orderId;
         this.description = description;
@@ -65,11 +66,11 @@ public class CarDamageEntity {
         this.severity = severity;
     }
 
-    public int getRepairCost() {
+    public BigDecimal getRepairCost() {
         return repairCost;
     }
 
-    public void setRepairCost(int repairCost) {
+    public void setRepairCost(BigDecimal repairCost) {
         this.repairCost = repairCost;
     }
 
@@ -93,7 +94,7 @@ public class CarDamageEntity {
         return id == that.id &&
                 orderId == that.orderId &&
                 severity == that.severity &&
-                repairCost == that.repairCost &&
+                Objects.equals(repairCost, that.repairCost) &&
                 Objects.equals(description, that.description) &&
                 Objects.equals(accidentDate, that.accidentDate) &&
                 status == that.status;
