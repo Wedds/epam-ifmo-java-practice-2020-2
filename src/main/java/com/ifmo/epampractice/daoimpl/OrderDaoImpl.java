@@ -37,16 +37,15 @@ public class OrderDaoImpl implements OrderDao {
                 OrderEntity currentInvoice = parseRow(resultSet);
                 orders.add(currentInvoice);
             }
-            return orders;
         } catch (SQLException e) {
             LOG.error(e);
-            return null;
         }
+        return orders;
     }
 
     @Override
     public OrderEntity get(int id) {
-        OrderEntity order;
+        OrderEntity order = null;
         try (Connection connection = dbConnector.getConnection();
              PreparedStatement statement = connection.prepareStatement(GET_QUERY,
                      ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
@@ -54,11 +53,10 @@ public class OrderDaoImpl implements OrderDao {
             statement.setInt(1, id);
             resultSet.first();
             order = parseRow(resultSet);
-            return order;
         } catch (SQLException e) {
             LOG.error(e);
-            return null;
         }
+        return order;
     }
 
     @Override
