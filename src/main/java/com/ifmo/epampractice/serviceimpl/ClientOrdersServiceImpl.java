@@ -1,6 +1,8 @@
 package com.ifmo.epampractice.serviceimpl;
 
+import com.ifmo.epampractice.dao.InvoiceDao;
 import com.ifmo.epampractice.dao.OrderDao;
+import com.ifmo.epampractice.daoimpl.InvoiceDaoImpl;
 import com.ifmo.epampractice.daoimpl.OrderDaoImpl;
 import com.ifmo.epampractice.entity.InvoiceEntity;
 import com.ifmo.epampractice.entity.OrderEntity;
@@ -12,16 +14,25 @@ import java.util.List;
 public class ClientOrdersServiceImpl implements ClientOrdersService {
     @Override
     public List<OrderEntity> getAllOrders(int userId) {
-        return null;
+        OrderDao dao = new OrderDaoImpl();
+        return dao.getAllByUserId(userId);
     }
 
     @Override
     public List<InvoiceEntity> getAllInvoices(int userId) {
-        return null;
+        InvoiceDao dao = new InvoiceDaoImpl();
+        return dao.getAllByUserId(userId);
     }
 
     @Override
     public void newOrder(int carId, int clientId, Date rentStartDate, Date rentEndDate) {
+        OrderEntity order = new OrderEntity();
+        order.setCarId(carId);
+        order.setClientId(clientId);
+        order.setRentStartDate(rentStartDate);
+        order.setRentEndDate(rentEndDate);
 
+        OrderDao dao = new OrderDaoImpl();
+        dao.save(order);
     }
 }
