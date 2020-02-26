@@ -37,16 +37,15 @@ public class InvoiceDaoImpl implements InvoiceDao {
                 InvoiceEntity currentInvoice = parseRow(resultSet);
                 invoices.add(currentInvoice);
             }
-            return invoices;
         } catch (SQLException e) {
             LOG.error(e);
-            return null;
         }
+        return invoices;
     }
 
     @Override
     public InvoiceEntity get(int id) {
-        InvoiceEntity invoice;
+        InvoiceEntity invoice = null;
         try (Connection connection = dbConnector.getConnection();
              PreparedStatement statement = connection.prepareStatement(GET_QUERY,
                      ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
@@ -54,11 +53,10 @@ public class InvoiceDaoImpl implements InvoiceDao {
             statement.setInt(1, id);
             resultSet.first();
             invoice = parseRow(resultSet);
-            return invoice;
         } catch (SQLException e) {
             LOG.error(e);
-            return null;
         }
+        return invoice;
     }
 
     @Override
