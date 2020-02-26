@@ -19,4 +19,6 @@ public interface OrderDao extends BasicDaoInterface<OrderEntity> {
 
     @Override
     void save(OrderEntity entity);
+
+    List<OrderEntity> getAllByUserId(int userId);
 }

@@ -16,6 +16,7 @@ import java.util.List;
 
 public class OrderDaoImpl implements OrderDao {
     private static final String GET_ALL_QUERY = "SELECT * FROM ORDERS";
+    private static final String GET_ALL_BY_USER_ID_QUERY = "SELECT * FROM ORDERS WHERE CLIENT_ID = ?";
     private static final String GET_QUERY = "SELECT * FROM ORDERS WHERE ID = ?";
     private static final String SAVE_QUERY = "INSERT INTO ORDERS (car_id, client_id, admin_id, " +
             "status, rent_start_date, rent_end_date, discount) VALUES (?, ?, ?, ?::e_status_order, ?, ?, ?)";
@@ -33,6 +34,24 @@ public class OrderDaoImpl implements OrderDao {
              Statement statement = connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,
                      ResultSet.CONCUR_READ_ONLY);
              ResultSet resultSet = statement.executeQuery(GET_ALL_QUERY)) {
+            while (resultSet.next()) {
+                OrderEntity currentInvoice = parseRow(resultSet);
+                orders.add(currentInvoice);
+            }
+        } catch (SQLException e) {
+            LOG.error(e);
+        }
+        return orders;
+    }
+
+    @Override
+    public List<OrderEntity> getAllByUserId(int userId) {
+        List<OrderEntity> orders = new ArrayList<>();
+        try (Connection connection = dbConnector.getConnection();
+             PreparedStatement statement = connection.prepareStatement(GET_QUERY,
+                     ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
+             ResultSet resultSet = statement.executeQuery(GET_ALL_BY_USER_ID_QUERY)) {
+            statement.setInt(1, userId);
             while (resultSet.next()) {
                 OrderEntity currentInvoice = parseRow(resultSet);
                 orders.add(currentInvoice);
