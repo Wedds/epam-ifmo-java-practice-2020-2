@@ -37,13 +37,11 @@ public class SignUpServiceImpl implements SignUpService {
         user.setAddress(address);
 
         usersDao.save(user);
-        return user;
+        return usersDao.getByEmail(email);
     }
 
     private boolean userExists(String email) {
-        //TODO: implement getByEmail() method for UsersDao and uncomment this line.
-        //return usersDao.getByEmail(email) != null;
-        return true;
+        return usersDao.getByEmail(email) != null;
     }
 
     private static final String PHONE_REGEX = "[\\d\\s\\(\\)\\+]+";
