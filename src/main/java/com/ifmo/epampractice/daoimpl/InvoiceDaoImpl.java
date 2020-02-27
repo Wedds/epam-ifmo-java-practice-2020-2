@@ -24,6 +24,7 @@ public class InvoiceDaoImpl implements InvoiceDao {
     private static final String UPDATE_QUERY = "UPDATE INVOICE SET (ORDER_ID, ISSUE_DATE, " +
             "PAYMENT_DATE, TOTAL_PRICE, STATUS) = (?, ?, ?, ?, ?::e_status_invoice) WHERE ID = ?";
     private static final String DELETE_QUERY = "DELETE FROM INVOICE WHERE ID = ?";
+    private static final String GET_BY_ORDER_QUERY = "SELECT * FROM INVOICE WHERE ORDER_ID = ?";
 
     private static final Logger LOG = LogManager.getLogger(InvoiceDaoImpl.class);
     private DBConnectorInterface dbConnector = DBConnectorPostgres.getInstance();
@@ -62,6 +63,23 @@ public class InvoiceDaoImpl implements InvoiceDao {
             LOG.error(e);
         }
         return invoices;
+    }
+
+    @Override
+    public InvoiceEntity getByOrderId(int orderId) {
+        InvoiceEntity invoice = null;
+        try (Connection connection = dbConnector.getConnection();
+             PreparedStatement statement = connection.prepareStatement(GET_BY_ORDER_QUERY,
+                     ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY)) {
+            statement.setInt(1, orderId);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                resultSet.first();
+                invoice = parseRow(resultSet);
+            }
+        } catch (SQLException e) {
+            LOG.error(e);
+        }
+        return invoice;
     }
 
     @Override
