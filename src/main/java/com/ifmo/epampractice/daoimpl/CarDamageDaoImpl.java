@@ -14,6 +14,7 @@ import java.util.List;
 public class CarDamageDaoImpl implements CarDamageDao {
     private static final String GET_ALL_QUERY = "SELECT * FROM car_damage";
     private static final String GET_QUERY = "SELECT * FROM car_damage WHERE id = ?";
+    private static final String GET_BY_ORDER_ID_QUERY = "SELECT * FROM car_damage WHERE order_id = ?";
     private static final String UPDATE_QUERY = "UPDATE car_damage SET order_id = ?, description = ?, " +
             "accident_date = ?, severity = ?, repair_cost = ?, status = ?::e_status_damage" +
             " WHERE id = ?";
@@ -49,6 +50,24 @@ public class CarDamageDaoImpl implements CarDamageDao {
              PreparedStatement statement = connection.prepareStatement(GET_QUERY)
         ) {
             statement.setInt(1, id);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    return entityFromResultSet(resultSet);
+                }
+            }
+        } catch (SQLException e) {
+            LOGGER.error(e);
+        }
+
+        return null;
+    }
+
+    @Override
+    public CarDamageEntity getByOrderId(int orderId) {
+        try (Connection connection = dbConnector.getConnection();
+             PreparedStatement statement = connection.prepareStatement(GET_BY_ORDER_ID_QUERY)
+        ) {
+            statement.setInt(1, orderId);
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
                     return entityFromResultSet(resultSet);
