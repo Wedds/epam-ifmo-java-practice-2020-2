@@ -1,4 +1,5 @@
 package com.ifmo.epampractice.dao;
+
 import com.ifmo.epampractice.entity.PassportEntity;
 
 import java.util.List;
@@ -18,4 +19,5 @@ public interface PassportDao extends BasicDaoInterface<PassportEntity> {
 
     @Override
     void save(PassportEntity PassportEntity);
+
 }

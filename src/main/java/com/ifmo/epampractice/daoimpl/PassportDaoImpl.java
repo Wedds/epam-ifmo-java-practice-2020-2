@@ -13,11 +13,13 @@ import java.util.List;
 public class PassportDaoImpl implements PassportDao {
     private static final String GET_ALL_QUERY = "SELECT * FROM passport";
     private static final String GET_QUERY = "SELECT * FROM passport WHERE id = ?";
-    private static final String UPDATE_QUERY = "UPDATE passport SET issue_country = ?, issuer = ?, issue_date = ?, expiration_date = ?, serial_number = ? WHERE id = ?";
+    private static final String UPDATE_QUERY = "UPDATE passport SET issue_country = ?, issuer = ?, issue_date = ?, " +
+            "expiration_date = ?, serial_number = ? WHERE id = ?";
     private static final String DELETE_QUERY = "DELETE FROM passport WHERE id = ?";
-    private static final String SAVE_QUERY = "INSERT INTO passport (issue_country, issuer, issue_date, expiration_date, serial_number) VALUES (?, ?, ?, ?, ?)";
+    private static final String SAVE_QUERY = "INSERT INTO passport (issue_country, issuer, issue_date," +
+            " expiration_date, serial_number) VALUES (?, ?, ?, ?, ?)";
 
-    private static final Logger LOGGER = LogManager.getLogger(CarDaoImpl.class);
+    private static final Logger logger = LogManager.getLogger(CarDaoImpl.class);
 
     private DBConnectorPostgres dbConnector = DBConnectorPostgres.getInstance();
 
@@ -34,7 +36,7 @@ public class PassportDaoImpl implements PassportDao {
                 passportEntityList.add(entityFromResultSet(resultSet));
             }
         } catch (SQLException e) {
-            LOGGER.error(e);
+            logger.error(e);
         }
         return passportEntityList;
     }
@@ -42,7 +44,7 @@ public class PassportDaoImpl implements PassportDao {
     @Override
     public PassportEntity get(int id) {
         try (Connection connection = dbConnector.getConnection();
-             PreparedStatement statement = connection.prepareStatement(GET_QUERY);
+             PreparedStatement statement = connection.prepareStatement(GET_QUERY)
         ) {
             statement.setInt(1, id);
             try (ResultSet resultSet = statement.executeQuery()) {
@@ -51,7 +53,7 @@ public class PassportDaoImpl implements PassportDao {
                 }
             }
         } catch (SQLException e) {
-            LOGGER.error(e);
+            logger.error(e);
         }
         return null;
     }
@@ -65,7 +67,7 @@ public class PassportDaoImpl implements PassportDao {
             statement.setInt(6, passportEntity.getId());
             statement.executeUpdate();
         } catch (SQLException e) {
-            LOGGER.error(e);
+            logger.error(e);
         }
     }
 
@@ -77,7 +79,7 @@ public class PassportDaoImpl implements PassportDao {
             statement.setInt(1, passportEntity.getId());
             statement.executeUpdate();
         } catch (SQLException e) {
-            LOGGER.error(e);
+            logger.error(e);
         }
 
     }
@@ -90,7 +92,7 @@ public class PassportDaoImpl implements PassportDao {
             setStatementFields(statement, passportEntity);
             statement.executeUpdate();
         } catch (SQLException e) {
-            LOGGER.error(e);
+            logger.error(e);
         }
 
     }
