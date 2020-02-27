@@ -4,6 +4,7 @@ import com.ifmo.epampractice.dao.DBConnectorInterface;
 import com.ifmo.epampractice.dao.DBConnectorPostgres;
 import com.ifmo.epampractice.dao.DrivingLicenseDAO;
 import com.ifmo.epampractice.entity.DrivingLicenseEntity;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,55 +17,52 @@ public class DrivingLicenseImpl implements DrivingLicenseDAO {
     private static final String DELETE_QUERY = "DELETE FROM driving_license WHERE ID = ?";
     private static final String SAVE_QUERY = "INSERT INTO driving_license (Issue_date, Expiration_date, Serial_number) VALUES (?, ?, ?)";
 
+    private DBConnectorInterface dbConnector = DBConnectorPostgres.getInstance();
+
     @Override
     public List<DrivingLicenseEntity> getAll() {
         List<DrivingLicenseEntity> drivingLicenseEntityArrayList = new ArrayList<>();
 
-        DBConnectorInterface dbConnector = DBConnectorPostgres.getInstance();
-        try (Connection connection = dbConnector.getConnection()) {
-            Statement statement = connection.createStatement(
-                    ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
-            ResultSet resultSet = statement.executeQuery(GET_ALL_QUERY);
+        try (Connection connection = dbConnector.getConnection();
+             Statement statement = connection.createStatement(
+                     ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
+             ResultSet resultSet = statement.executeQuery(GET_ALL_QUERY)) {
             while (resultSet.next()) {
                 drivingLicenseEntityArrayList.add(entityFromResultSet(resultSet));
             }
-            return drivingLicenseEntityArrayList;
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
-            return drivingLicenseEntityArrayList;
         }
+        return drivingLicenseEntityArrayList;
     }
 
     @Override
     public DrivingLicenseEntity get(int id) {
         DBConnectorInterface dbConnector = DBConnectorPostgres.getInstance();
-        try (Connection connection = dbConnector.getConnection()) {
-            PreparedStatement statement = connection.prepareStatement(GET_QUERY,
-                    ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
+        try (Connection connection = dbConnector.getConnection();
+             PreparedStatement statement = connection.prepareStatement(GET_QUERY,
+                     ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY)) {
             statement.setInt(1, id);
-            ResultSet resultSet = statement.executeQuery();
-            if (resultSet.next()) {
-                return entityFromResultSet(resultSet);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    return entityFromResultSet(resultSet);
+                }
             }
-            return null;
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
-            return null;
         }
+        return null;
     }
 
     @Override
     public void update(DrivingLicenseEntity entity) {
         DBConnectorInterface dbConnector = DBConnectorPostgres.getInstance();
-        try (Connection connection = dbConnector.getConnection()) {
-            PreparedStatement statement = connection.prepareStatement(UPDATE_QUERY);
+        try (Connection connection = dbConnector.getConnection();
+             PreparedStatement statement = connection.prepareStatement(UPDATE_QUERY)) {
             setStatementFields(statement, entity);
             statement.setInt(4, entity.getId());
             statement.executeUpdate();
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
 
@@ -73,12 +71,11 @@ public class DrivingLicenseImpl implements DrivingLicenseDAO {
     @Override
     public void delete(DrivingLicenseEntity entity) {
         DBConnectorInterface dbConnector = DBConnectorPostgres.getInstance();
-        try (Connection connection = dbConnector.getConnection()) {
-            PreparedStatement statement = connection.prepareStatement(DELETE_QUERY);
+        try (Connection connection = dbConnector.getConnection();
+             PreparedStatement statement = connection.prepareStatement(DELETE_QUERY)) {
             statement.setInt(1, entity.getId());
             statement.execute();
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
@@ -86,12 +83,11 @@ public class DrivingLicenseImpl implements DrivingLicenseDAO {
     @Override
     public void save(DrivingLicenseEntity entity) {
         DBConnectorInterface dbConnector = DBConnectorPostgres.getInstance();
-        try (Connection connection = dbConnector.getConnection()) {
-            PreparedStatement statement = connection.prepareStatement(SAVE_QUERY);
+        try (Connection connection = dbConnector.getConnection();
+             PreparedStatement statement = connection.prepareStatement(SAVE_QUERY)) {
             setStatementFields(statement, entity);
             statement.execute();
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
