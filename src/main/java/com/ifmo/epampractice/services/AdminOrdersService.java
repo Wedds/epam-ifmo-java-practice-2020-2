@@ -14,12 +14,6 @@ public interface AdminOrdersService {
 
     public OrderEntity getOrderById(int orderId);
 
-    /*
-    Автоматически менять статус на:
-    WAITING_FOR_PAYMENT - после выставления счета
-    CLOSE - после оплаты заказа
-    CANCELED - после неподтвердения
-     */
     public void approveOrder(int orderId);
 
     public void disapproveOrder(int orderId);

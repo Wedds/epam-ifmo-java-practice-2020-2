@@ -48,7 +48,7 @@ public class AdminOrdersServiceImpl implements AdminOrdersService {
     public void disapproveOrder(int orderId) {
         OrderDao orderDao = new OrderDaoImpl();
         OrderEntity orderEntity = orderDao.get(orderId);
-        orderEntity.setStatus(OrderStatus.CANCELED);
+        orderEntity.setStatus(OrderStatus.DENIED);
         orderDao.update(orderEntity);
     }
 
@@ -73,8 +73,12 @@ public class AdminOrdersServiceImpl implements AdminOrdersService {
         invoiceEntity.setTotalPrice(totalPrice);
         invoiceEntity.setIssueDate(new Date());
         invoiceEntity.setStatus(InvoiceStatus.OPEN);
-
         invoiceDao.save(invoiceEntity);
+
+        OrderDao orderDao = new OrderDaoImpl();
+        OrderEntity orderEntity = orderDao.get(orderId);
+        orderEntity.setStatus(OrderStatus.WAITING_FOR_PAYMENT);
+        orderDao.update(orderEntity);
     }
 
     @Override
