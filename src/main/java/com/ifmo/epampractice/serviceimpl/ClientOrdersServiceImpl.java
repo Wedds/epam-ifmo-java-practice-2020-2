@@ -33,6 +33,18 @@ public class ClientOrdersServiceImpl implements ClientOrdersService {
     }
 
     @Override
+    public OrderEntity getOrderById(int id) {
+        OrderDao dao = new OrderDaoImpl();
+        return dao.get(id);
+    }
+
+    @Override
+    public InvoiceEntity getInvoiceById(int id) {
+        InvoiceDao dao = new InvoiceDaoImpl();
+        return dao.get(id);
+    }
+
+    @Override
     public InvoiceEntity getInvoiceByOrderId(int orderId) {
         InvoiceDao dao = new InvoiceDaoImpl();
         return dao.getByOrderId(orderId);
