@@ -4,7 +4,7 @@ import com.ifmo.epampractice.entity.DrivingLicenseEntity;
 import java.util.ArrayList;
 import java.util.List;
 
-public interface DrivingLicenseDAO extends BasicDaoInterface<DrivingLicenseEntity> {
+public interface DrivingLicenseDao extends BasicDaoInterface<DrivingLicenseEntity> {
     @Override
     List<DrivingLicenseEntity> getAll();
 
@@ -12,11 +12,12 @@ public interface DrivingLicenseDAO extends BasicDaoInterface<DrivingLicenseEntit
     DrivingLicenseEntity get(int id);
 
     @Override
-    void update(DrivingLicenseEntity o);
+    void update(DrivingLicenseEntity entity);
 
     @Override
-    void delete(DrivingLicenseEntity o);
+    void delete(DrivingLicenseEntity entity);
 
     @Override
-    void save(DrivingLicenseEntity o);
+    void save(DrivingLicenseEntity entity);
+
 }

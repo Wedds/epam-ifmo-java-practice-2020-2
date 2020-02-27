@@ -2,7 +2,7 @@ package com.ifmo.epampractice.daoimpl;
 
 import com.ifmo.epampractice.dao.DBConnectorInterface;
 import com.ifmo.epampractice.dao.DBConnectorPostgres;
-import com.ifmo.epampractice.dao.DrivingLicenseDAO;
+import com.ifmo.epampractice.dao.DrivingLicenseDao;
 import com.ifmo.epampractice.entity.DrivingLicenseEntity;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -11,15 +11,17 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DrivingLicenseImpl implements DrivingLicenseDAO {
+public class DrivingLicenseDaoImpl implements DrivingLicenseDao {
 
     private static final String GET_ALL_QUERY = "SELECT * FROM driving_license";
     private static final String GET_QUERY = "SELECT * FROM driving_license WHERE ID = ?";
-    private static final String UPDATE_QUERY = "UPDATE driving_license SET (Issue_date, Expiration_date, Serial_number) = (?, ?, ?) WHERE ID = ?";
+    private static final String UPDATE_QUERY = "UPDATE driving_license SET " +
+            "(Issue_date, Expiration_date, Serial_number) = (?, ?, ?) WHERE ID = ?";
     private static final String DELETE_QUERY = "DELETE FROM driving_license WHERE ID = ?";
-    private static final String SAVE_QUERY = "INSERT INTO driving_license (Issue_date, Expiration_date, Serial_number) VALUES (?, ?, ?)";
+    private static final String SAVE_QUERY = "INSERT INTO driving_license " +
+            "(Issue_date, Expiration_date, Serial_number) VALUES (?, ?, ?)";
 
-    private static final Logger LOG = LogManager.getLogger(DrivingLicenseImpl.class);
+    private static final Logger log  = LogManager.getLogger(DrivingLicenseDaoImpl.class);
     private DBConnectorInterface dbConnector = DBConnectorPostgres.getInstance();
 
     @Override
@@ -34,14 +36,13 @@ public class DrivingLicenseImpl implements DrivingLicenseDAO {
                 drivingLicenseEntityArrayList.add(entityFromResultSet(resultSet));
             }
         } catch (SQLException e) {
-            LOG.error(e);
+            log.error(e);
         }
         return drivingLicenseEntityArrayList;
     }
 
     @Override
     public DrivingLicenseEntity get(int id) {
-        DBConnectorInterface dbConnector = DBConnectorPostgres.getInstance();
         try (Connection connection = dbConnector.getConnection();
              PreparedStatement statement = connection.prepareStatement(GET_QUERY,
                      ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY)) {
@@ -52,46 +53,43 @@ public class DrivingLicenseImpl implements DrivingLicenseDAO {
                 }
             }
         } catch (SQLException e) {
-            LOG.error(e);
+            log.error(e);
         }
         return null;
     }
 
     @Override
     public void update(DrivingLicenseEntity entity) {
-        DBConnectorInterface dbConnector = DBConnectorPostgres.getInstance();
         try (Connection connection = dbConnector.getConnection();
              PreparedStatement statement = connection.prepareStatement(UPDATE_QUERY)) {
             setStatementFields(statement, entity);
             statement.setInt(4, entity.getId());
             statement.executeUpdate();
         } catch (SQLException e) {
-            LOG.error(e);
+            log.error(e);
         }
 
     }
 
     @Override
     public void delete(DrivingLicenseEntity entity) {
-        DBConnectorInterface dbConnector = DBConnectorPostgres.getInstance();
         try (Connection connection = dbConnector.getConnection();
              PreparedStatement statement = connection.prepareStatement(DELETE_QUERY)) {
             statement.setInt(1, entity.getId());
             statement.execute();
         } catch (SQLException e) {
-            LOG.error(e);
+            log.error(e);
         }
     }
 
     @Override
     public void save(DrivingLicenseEntity entity) {
-        DBConnectorInterface dbConnector = DBConnectorPostgres.getInstance();
         try (Connection connection = dbConnector.getConnection();
              PreparedStatement statement = connection.prepareStatement(SAVE_QUERY)) {
             setStatementFields(statement, entity);
             statement.execute();
         } catch (SQLException e) {
-            LOG.error(e);
+            log.error(e);
         }
     }
 
@@ -104,7 +102,8 @@ public class DrivingLicenseImpl implements DrivingLicenseDAO {
         );
     }
 
-    private void setStatementFields(PreparedStatement statement, DrivingLicenseEntity entity) throws SQLException {
+    private void setStatementFields(PreparedStatement statement, DrivingLicenseEntity entity)
+            throws SQLException {
         statement.setDate(1, Date.valueOf(entity.getIssueDate()));
         statement.setDate(2, Date.valueOf(entity.getExpirationDate()));
         statement.setString(3, entity.getSerialNumber());
