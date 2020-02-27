@@ -66,6 +66,16 @@ public class AdminOrdersServiceImpl implements AdminOrdersService {
     }
 
     @Override
+    public InvoiceEntity getInvoice(int orderId, List<InvoiceEntity> invoices) {
+        for (InvoiceEntity invoiceEntity : invoices) {
+            if (invoiceEntity.getOrderId() == orderId) {
+                return invoiceEntity;
+            }
+        }
+        return null;
+    }
+
+    @Override
     public void addInvoice(int orderId, BigDecimal totalPrice) {
         InvoiceDao invoiceDao = new InvoiceDaoImpl();
         InvoiceEntity invoiceEntity = new InvoiceEntity();
@@ -96,6 +106,16 @@ public class AdminOrdersServiceImpl implements AdminOrdersService {
     public CarDamageEntity getCarDamage(int orderId) {
         CarDamageDao carDamageDao = new CarDamageDaoImpl();
         return carDamageDao.getByOrderId(orderId);
+    }
+
+    @Override
+    public CarDamageEntity getCarDamage(int orderId, List<CarDamageEntity> carDamages) {
+        for (CarDamageEntity carDamageEntity : carDamages) {
+            if (carDamageEntity.getOrderId() == orderId) {
+                return carDamageEntity;
+            }
+        }
+        return null;
     }
 
     @Override

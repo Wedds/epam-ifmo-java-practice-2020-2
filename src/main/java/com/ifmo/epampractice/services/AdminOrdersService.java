@@ -22,11 +22,15 @@ public interface AdminOrdersService {
 
     public InvoiceEntity getInvoice(int orderId);
 
+    public InvoiceEntity getInvoice(int orderId, List<InvoiceEntity> invoices);
+
     public void addInvoice(int orderId, BigDecimal totalPrice);
 
     public void updateInvoice(int orderId, BigDecimal totalPrice);
 
     public CarDamageEntity getCarDamage(int orderId);
+
+    public CarDamageEntity getCarDamage(int orderId, List<CarDamageEntity> carDamages);
 
     public void addCarDamage(int orderId, String description, LocalDate accidentDate, int severity, BigDecimal repairCost);
 
