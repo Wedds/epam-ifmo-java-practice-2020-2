@@ -17,7 +17,6 @@ import java.util.Date;
 public class InvoiceDaoImpl implements InvoiceDao {
     private static final String GET_ALL_QUERY = "SELECT * FROM INVOICE";
     private static final String GET_QUERY = "SELECT * FROM INVOICE WHERE ID = ?";
-    private static final String GET_BY_ORDER_ID_QUERY = "SELECT * FROM INVOICE WHERE ORDER_ID = ?";
     private static final String SAVE_QUERY = "INSERT INTO INVOICE (ORDER_ID, ISSUE_DATE, " +
             "PAYMENT_DATE, TOTAL_PRICE, STATUS) VALUES ( ?, ?, ?, ?, ?::e_status_invoice)";
     private static final String UPDATE_QUERY = "UPDATE INVOICE SET (ORDER_ID, ISSUE_DATE, " +
@@ -45,29 +44,13 @@ public class InvoiceDaoImpl implements InvoiceDao {
     }
 
     @Override
-    public InvoiceEntity get(int invoiceId) {
+    public InvoiceEntity get(int id) {
         InvoiceEntity invoice = null;
         try (Connection connection = dbConnector.getConnection();
              PreparedStatement statement = connection.prepareStatement(GET_QUERY,
                      ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
              ResultSet resultSet = statement.executeQuery()) {
-            statement.setInt(1, invoiceId);
-            resultSet.first();
-            invoice = parseRow(resultSet);
-        } catch (SQLException e) {
-            LOG.error(e);
-        }
-        return invoice;
-    }
-
-    @Override
-    public InvoiceEntity getByOrderId(int orderId) {
-        InvoiceEntity invoice = null;
-        try (Connection connection = dbConnector.getConnection();
-             PreparedStatement statement = connection.prepareStatement(GET_QUERY,
-                     ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
-             ResultSet resultSet = statement.executeQuery()) {
-            statement.setInt(1, orderId);
+            statement.setInt(1, id);
             resultSet.first();
             invoice = parseRow(resultSet);
         } catch (SQLException e) {
