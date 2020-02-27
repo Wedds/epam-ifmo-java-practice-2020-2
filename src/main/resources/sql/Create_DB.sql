@@ -67,6 +67,7 @@ CREATE TABLE Car (
 CREATE TYPE e_status_order AS ENUM (
     'open',
     'canceled',
+    'denied',
     'approved',
     'waiting for payment',
     'close'
