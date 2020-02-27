@@ -9,6 +9,8 @@ public interface UsersDao extends BasicDaoInterface<UsersEntity> {
 
     UsersEntity get(int id);
 
+    UsersEntity getByEmail(String email);
+
     void update(UsersEntity entity);
 
     void delete(UsersEntity entity);
