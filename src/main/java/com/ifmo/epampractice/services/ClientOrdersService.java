@@ -10,4 +10,5 @@ public interface ClientOrdersService {
     List<OrderEntity> getAllOrders(int userId);
     List<InvoiceEntity> getAllInvoices(int userId);
     void newOrder(int carId, int clientId, Date rentStartDate, Date rentEndDate);
+    boolean cancelOrder(int orderId);
 }

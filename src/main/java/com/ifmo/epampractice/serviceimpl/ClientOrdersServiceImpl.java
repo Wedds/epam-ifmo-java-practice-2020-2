@@ -6,6 +6,7 @@ import com.ifmo.epampractice.daoimpl.InvoiceDaoImpl;
 import com.ifmo.epampractice.daoimpl.OrderDaoImpl;
 import com.ifmo.epampractice.entity.InvoiceEntity;
 import com.ifmo.epampractice.entity.OrderEntity;
+import com.ifmo.epampractice.enums.OrderStatus;
 import com.ifmo.epampractice.services.ClientOrdersService;
 
 import java.util.Date;
@@ -34,5 +35,22 @@ public class ClientOrdersServiceImpl implements ClientOrdersService {
 
         OrderDao dao = new OrderDaoImpl();
         dao.save(order);
+    }
+
+    @Override
+    public boolean cancelOrder(int orderId) {
+        OrderDao dao = new OrderDaoImpl();
+        OrderEntity order = dao.get(orderId);
+        if (accessToCancel(order)) {
+            order.setStatus(OrderStatus.CANCELED);
+            dao.update(order);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private boolean accessToCancel(OrderEntity order) {
+        return order.getStatus() == OrderStatus.OPEN;
     }
 }
