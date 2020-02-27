@@ -4,6 +4,8 @@ import com.ifmo.epampractice.dao.DBConnectorInterface;
 import com.ifmo.epampractice.dao.DBConnectorPostgres;
 import com.ifmo.epampractice.dao.DrivingLicenseDAO;
 import com.ifmo.epampractice.entity.DrivingLicenseEntity;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -17,6 +19,7 @@ public class DrivingLicenseImpl implements DrivingLicenseDAO {
     private static final String DELETE_QUERY = "DELETE FROM driving_license WHERE ID = ?";
     private static final String SAVE_QUERY = "INSERT INTO driving_license (Issue_date, Expiration_date, Serial_number) VALUES (?, ?, ?)";
 
+    private static final Logger LOG = LogManager.getLogger(DrivingLicenseImpl.class);
     private DBConnectorInterface dbConnector = DBConnectorPostgres.getInstance();
 
     @Override
@@ -31,7 +34,7 @@ public class DrivingLicenseImpl implements DrivingLicenseDAO {
                 drivingLicenseEntityArrayList.add(entityFromResultSet(resultSet));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOG.error(e);
         }
         return drivingLicenseEntityArrayList;
     }
@@ -49,7 +52,7 @@ public class DrivingLicenseImpl implements DrivingLicenseDAO {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOG.error(e);
         }
         return null;
     }
@@ -63,7 +66,7 @@ public class DrivingLicenseImpl implements DrivingLicenseDAO {
             statement.setInt(4, entity.getId());
             statement.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOG.error(e);
         }
 
     }
@@ -76,7 +79,7 @@ public class DrivingLicenseImpl implements DrivingLicenseDAO {
             statement.setInt(1, entity.getId());
             statement.execute();
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOG.error(e);
         }
     }
 
@@ -88,7 +91,7 @@ public class DrivingLicenseImpl implements DrivingLicenseDAO {
             setStatementFields(statement, entity);
             statement.execute();
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOG.error(e);
         }
     }
 
