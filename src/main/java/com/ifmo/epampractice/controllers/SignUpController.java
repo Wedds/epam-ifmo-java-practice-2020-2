@@ -30,7 +30,7 @@ public class SignUpController extends HttpServlet {
     private static final BigDecimal INITIAL_REPUTATION = new BigDecimal(1.0);
 
     private static final DateTimeFormatter dateFormatter
-            = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+            = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
