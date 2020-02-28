@@ -1,5 +1,6 @@
 package com.ifmo.epampractice.serviceimpl;
 
+import com.ifmo.epampractice.dao.PassportDao;
 import com.ifmo.epampractice.dao.UsersDao;
 import com.ifmo.epampractice.entity.DrivingLicenseEntity;
 import com.ifmo.epampractice.entity.PassportEntity;
@@ -13,14 +14,20 @@ import java.time.LocalDate;
 public class PersonalDataServiceImpl implements PersonalDataService {
 
     private UsersDao usersDao;
-   // private PassportDao passportDao; after merge
+    private PassportDao passportDao;
     private PasswordHashService passwordHashService;
+
+    public PersonalDataServiceImpl(UsersDao usersDao, PassportDao passportDao, PasswordHashService passwordHashService){
+        this.usersDao = usersDao;
+        this.passportDao = passportDao;
+        this.passwordHashService = passwordHashService;
+    }
 
     @Override
     public PassportEntity changePassport(int userId, String issueCountry, String issuer, LocalDate issueDate,
                                          LocalDate expirationDate, String serialNumber) {
         UsersEntity usersEntity = usersDao.get(userId);
-        //PassportEntity passportEntity = passportDao.get(usersEntity.getPassId()); after merge
+        PassportEntity passportEntity = passportDao.get(usersEntity.getPassId());
         if (usersEntity == null){
             throw new RuntimeException();
         }
@@ -38,21 +45,24 @@ public class PersonalDataServiceImpl implements PersonalDataService {
                                           LocalDate expirationDate, String serialNumber){
         validatePassport(issueCountry, issuer, issueDate, expirationDate, serialNumber);
 
-        PassportEntity passportEntity = new PassportEntity(0,issueCountry, issuer, issueDate, expirationDate,
+        PassportEntity passportEntity = new PassportEntity(0, issueCountry, issuer, issueDate, expirationDate,
                 serialNumber);
-        //passportDAO.save(passportEntity); after merge
-        //add getBySerialNumber in PassportDao to get Id for new passport
-        //update userEntity with Id of new passport
-        //return passportEntity
-        return null;
+        passportDao.save(passportEntity);
+        passportEntity = passportDao.getBySerialNumber(passportEntity.getSerialNumber());
+        usersEntity.setPassId(passportEntity.getId());
+        usersDao.update(usersEntity);
+        return passportEntity;
     }
-    private PassportEntity updatePassport(PassportEntity passportEntity, String issueCountry, String issuer, LocalDate issueDate,
-                                          LocalDate expirationDate, String serialNumber){
+    private PassportEntity updatePassport(PassportEntity passportEntity, String issueCountry, String issuer,
+                                          LocalDate issueDate, LocalDate expirationDate, String serialNumber){
         validatePassport(issueCountry, issuer, issueDate, expirationDate, serialNumber);
-        //passportEntity.set set all fields
-        //update passportEntity
-        //return passportEntity
-        return null;
+        passportEntity.setIssueCountry(issueCountry);
+        passportEntity.setIssuer(issuer);
+        passportEntity.setIssueDate(issueDate);
+        passportEntity.setExpirationDate(expirationDate);
+        passportEntity.setSerialNumber(serialNumber);
+        passportDao.update(passportEntity);
+        return passportEntity;
     }
     @Override
     public DrivingLicenseEntity changeDrivingLicence(int userId, LocalDate issueDate, LocalDate expirationDate,

@@ -20,4 +20,5 @@ public interface PassportDao extends BasicDaoInterface<PassportEntity> {
     @Override
     void save(PassportEntity PassportEntity);
 
+    PassportEntity getBySerialNumber(String serialNumber);
 }

@@ -18,6 +18,7 @@ public class PassportDaoImpl implements PassportDao {
     private static final String DELETE_QUERY = "DELETE FROM passport WHERE id = ?";
     private static final String SAVE_QUERY = "INSERT INTO passport (issue_country, issuer, issue_date," +
             " expiration_date, serial_number) VALUES (?, ?, ?, ?, ?)";
+    private static final String GET_BE_SERIAL_NUMBER_QUERY = "SELECT * FROM passport WHERE serial_number = ?";
 
     private static final Logger logger = LogManager.getLogger(CarDaoImpl.class);
 
@@ -95,6 +96,23 @@ public class PassportDaoImpl implements PassportDao {
             logger.error(e);
         }
 
+    }
+
+    @Override
+    public PassportEntity getBySerialNumber(String serialNumber) {
+        try (Connection connection = dbConnector.getConnection();
+             PreparedStatement statement = connection.prepareStatement(GET_BE_SERIAL_NUMBER_QUERY)
+        ) {
+            statement.setString(1, serialNumber);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    return entityFromResultSet(resultSet);
+                }
+            }
+        } catch (SQLException e) {
+            logger.error(e);
+        }
+        return null;
     }
 
     private PassportEntity entityFromResultSet(ResultSet resultSet) throws SQLException {
