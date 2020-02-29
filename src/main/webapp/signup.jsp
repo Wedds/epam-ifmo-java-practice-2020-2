@@ -33,6 +33,7 @@
     <div class="jumbotron text-center">
         <h1>Регистрация</h1>
         <p>Создав новый аккаунт, вы сможете арендовать автомобили в любое время</p>
+        <a href="/"><button class="btn btn-link">Вернуться назад</button></a>
     </div>
 
     <div class="container">
@@ -42,30 +43,30 @@
                 <form method="POST" action="/signup">
                     <div class="signup-row">
                         <span>Email:</span>
-                        <input type="text" name="email" placeholder="hello@world.com" />
+                        <input type="text" name="email" required placeholder="hello@world.com" />
                     </div>
                     <div class="signup-row">
                         <span>Пароль:</span>
-                        <input type="password" name="password" placeholder="*****" />
+                        <input type="password" name="password" required placeholder="*****" />
                     </div>
                     <div class="signup-row">
                         <span>Полное имя:</span>
-                        <input type="text" name="name" placeholder="Василий Анатольевич Петров" />
+                        <input type="text" name="name" required placeholder="Василий Анатольевич Петров" />
                     </div>
                     <div class="signup-row">
                         <span>Дата рождения:</span>
-                        <input type="date" name="birthDate" placeholder="01.01.1991" />
+                        <input type="date" name="birthDate" required placeholder="01.01.1991" />
                     </div>
                     <div class="signup-row">
                         <span>Номер телефона:</span>
-                        <input type="text" name="phone" placeholder="+7 (777) 777 77 77" />
+                        <input type="text" name="phone" required placeholder="+7 (777) 777 77 77" />
                     </div>
                     <div class="signup-row">
                         <span>Адрес:</span>
-                        <input type="text" name="address" placeholder="Москва, пр. Ленина 4">
+                        <input type="text" name="address" required placeholder="Москва, пр. Ленина 4">
                     </div>
-                    <div>
-                        <input type="submit" value="Продолжить" />
+                    <div style="text-align: center; margin-top: 20px;">
+                        <input class="btn btn-secondary" type="submit" value="Продолжить" />
                     </div>
                 </form>
             </div>
