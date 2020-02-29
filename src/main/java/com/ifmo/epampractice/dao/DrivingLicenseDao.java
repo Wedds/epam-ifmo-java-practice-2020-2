@@ -20,4 +20,5 @@ public interface DrivingLicenseDao extends BasicDaoInterface<DrivingLicenseEntit
     @Override
     void save(DrivingLicenseEntity entity);
 
+    DrivingLicenseEntity getBySerialNumber(String serialNumber);
 }

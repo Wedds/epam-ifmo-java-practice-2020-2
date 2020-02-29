@@ -20,6 +20,7 @@ public class DrivingLicenseDaoImpl implements DrivingLicenseDao {
     private static final String DELETE_QUERY = "DELETE FROM driving_license WHERE ID = ?";
     private static final String SAVE_QUERY = "INSERT INTO driving_license " +
             "(Issue_date, Expiration_date, Serial_number) VALUES (?, ?, ?)";
+    private static final String GET_BY_SERIAL_NUMBER_QUERY = "SELECT * FROM driving_license WHERE Serial_number = ?";
 
     private static final Logger log  = LogManager.getLogger(DrivingLicenseDaoImpl.class);
     private DBConnectorInterface dbConnector = DBConnectorPostgres.getInstance();
@@ -91,6 +92,23 @@ public class DrivingLicenseDaoImpl implements DrivingLicenseDao {
         } catch (SQLException e) {
             log.error(e);
         }
+    }
+
+    @Override
+    public DrivingLicenseEntity getBySerialNumber(String serialNumber) {
+        try (Connection connection = dbConnector.getConnection();
+             PreparedStatement statement = connection.prepareStatement(GET_BY_SERIAL_NUMBER_QUERY,
+                     ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY)) {
+            statement.setString(1, serialNumber);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    return entityFromResultSet(resultSet);
+                }
+            }
+        } catch (SQLException e) {
+            log.error(e);
+        }
+        return null;
     }
 
     private DrivingLicenseEntity entityFromResultSet(ResultSet resultSet) throws SQLException {
