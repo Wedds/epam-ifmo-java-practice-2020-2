@@ -22,7 +22,7 @@ public class DrivingLicenseDaoImpl implements DrivingLicenseDao {
             "(Issue_date, Expiration_date, Serial_number) VALUES (?, ?, ?)";
     private static final String GET_BY_SERIAL_NUMBER_QUERY = "SELECT * FROM driving_license WHERE Serial_number = ?";
 
-    private static final Logger log  = LogManager.getLogger(DrivingLicenseDaoImpl.class);
+    private static final Logger log = LogManager.getLogger(DrivingLicenseDaoImpl.class);
     private DBConnectorInterface dbConnector = DBConnectorPostgres.getInstance();
 
     @Override
@@ -69,7 +69,6 @@ public class DrivingLicenseDaoImpl implements DrivingLicenseDao {
         } catch (SQLException e) {
             log.error(e);
         }
-
     }
 
     @Override

@@ -1,7 +1,7 @@
 package com.ifmo.epampractice.dao;
+
 import com.ifmo.epampractice.entity.DrivingLicenseEntity;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public interface DrivingLicenseDao extends BasicDaoInterface<DrivingLicenseEntity> {
