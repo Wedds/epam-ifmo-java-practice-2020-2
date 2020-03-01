@@ -19,26 +19,26 @@ import com.ifmo.epampractice.services.AdminOrdersService;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 
 public class AdminOrdersServiceImpl implements AdminOrdersService {
+    private OrderDao orderDao = new OrderDaoImpl();
+    private UsersDao usersDao = new UsersDaoImpl();
+    private InvoiceDao invoiceDao = new InvoiceDaoImpl();
+    private CarDamageDao carDamageDao = new CarDamageDaoImpl();
 
     @Override
     public List<OrderEntity> getAllOrders() {
-        OrderDao dao = new OrderDaoImpl();
-        return dao.getAll();
+        return orderDao.getAll();
     }
 
     @Override
     public OrderEntity getOrderById(int orderId) {
-        OrderDao orderDao = new OrderDaoImpl();
         return orderDao.get(orderId);
     }
 
     @Override
     public void approveOrder(int orderId) {
-        OrderDao orderDao = new OrderDaoImpl();
         OrderEntity orderEntity = orderDao.get(orderId);
         orderEntity.setStatus(OrderStatus.APPROVED);
         orderDao.update(orderEntity);
@@ -46,7 +46,6 @@ public class AdminOrdersServiceImpl implements AdminOrdersService {
 
     @Override
     public void disapproveOrder(int orderId) {
-        OrderDao orderDao = new OrderDaoImpl();
         OrderEntity orderEntity = orderDao.get(orderId);
         orderEntity.setStatus(OrderStatus.DENIED);
         orderDao.update(orderEntity);
@@ -54,14 +53,12 @@ public class AdminOrdersServiceImpl implements AdminOrdersService {
 
     @Override
     public boolean userDocumentsIsAvailable(int userId) {
-        UsersDao usersDao = new UsersDaoImpl();
         UsersEntity usersEntity = usersDao.get(userId);
         return usersEntity.getDrivingLicenseId() != 0 && usersEntity.getPassId() != 0;
     }
 
     @Override
     public InvoiceEntity getInvoice(int orderId) {
-        InvoiceDao invoiceDao = new InvoiceDaoImpl();
         return invoiceDao.getByOrderId(orderId);
     }
 
@@ -77,15 +74,13 @@ public class AdminOrdersServiceImpl implements AdminOrdersService {
 
     @Override
     public void addInvoice(int orderId, BigDecimal totalPrice) {
-        InvoiceDao invoiceDao = new InvoiceDaoImpl();
         InvoiceEntity invoiceEntity = new InvoiceEntity();
         invoiceEntity.setOrderId(orderId);
         invoiceEntity.setTotalPrice(totalPrice);
-        invoiceEntity.setIssueDate(new Date());
+        invoiceEntity.setIssueDate(LocalDate.now());
         invoiceEntity.setStatus(InvoiceStatus.OPEN);
         invoiceDao.save(invoiceEntity);
 
-        OrderDao orderDao = new OrderDaoImpl();
         OrderEntity orderEntity = orderDao.get(orderId);
         orderEntity.setStatus(OrderStatus.WAITING_FOR_PAYMENT);
         orderDao.update(orderEntity);
@@ -93,18 +88,16 @@ public class AdminOrdersServiceImpl implements AdminOrdersService {
 
     @Override
     public void updateInvoice(int orderId, BigDecimal totalPrice) {
-        InvoiceDao invoiceDao = new InvoiceDaoImpl();
         InvoiceEntity invoiceEntity = invoiceDao.getByOrderId(orderId);
         if (invoiceEntity.getStatus() == InvoiceStatus.OPEN) {
             invoiceEntity.setTotalPrice(totalPrice);
-            invoiceEntity.setIssueDate(new Date());
+            invoiceEntity.setIssueDate(LocalDate.now());
         }
         invoiceDao.update(invoiceEntity);
     }
 
     @Override
     public CarDamageEntity getCarDamage(int orderId) {
-        CarDamageDao carDamageDao = new CarDamageDaoImpl();
         return carDamageDao.getByOrderId(orderId);
     }
 
@@ -121,7 +114,6 @@ public class AdminOrdersServiceImpl implements AdminOrdersService {
     @Override
     public void addCarDamage(int orderId, String description, LocalDate accidentDate,
                              int severity, BigDecimal repairCost) {
-        CarDamageDao carDamageDao = new CarDamageDaoImpl();
         CarDamageEntity carDamageEntity = new CarDamageEntity(0, orderId, description,
                 accidentDate, severity, repairCost, DamageStatus.NOT_FIXED);
 
@@ -131,7 +123,6 @@ public class AdminOrdersServiceImpl implements AdminOrdersService {
     @Override
     public void updateCarDamage(int orderId, String description, LocalDate accidentDate,
                                 int severity, BigDecimal repairCost) {
-        CarDamageDao carDamageDao = new CarDamageDaoImpl();
         CarDamageEntity carDamageEntity = carDamageDao.getByOrderId(orderId);
         carDamageEntity.setDescription(description);
         carDamageEntity.setAccidentDate(accidentDate);

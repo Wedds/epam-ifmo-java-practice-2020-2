@@ -32,8 +32,10 @@ public interface AdminOrdersService {
 
     public CarDamageEntity getCarDamage(int orderId, List<CarDamageEntity> carDamages);
 
-    public void addCarDamage(int orderId, String description, LocalDate accidentDate, int severity, BigDecimal repairCost);
+    public void addCarDamage(int orderId, String description, LocalDate accidentDate,
+                             int severity, BigDecimal repairCost);
 
-    public void updateCarDamage(int orderId, String description, LocalDate accidentDate, int severity, BigDecimal repairCost);
+    public void updateCarDamage(int orderId, String description, LocalDate accidentDate,
+                                int severity, BigDecimal repairCost);
 
 }
