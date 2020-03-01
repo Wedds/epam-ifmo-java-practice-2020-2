@@ -39,7 +39,8 @@ public class LogInController extends HttpServlet {
         password.append(passwordStr.toCharArray());
 
         if (!logInService.getAuth(email, password)) {
-            throw new RuntimeException();
+            resp.sendRedirect("/login?error=1");
+            return;
         }
         HttpSession session = req.getSession();
         session.setAttribute("name", email);
