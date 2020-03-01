@@ -23,11 +23,11 @@ import java.time.format.DateTimeFormatter;
 @WebServlet(name = "SignUpController", urlPatterns = "/signup")
 public class SignUpController extends HttpServlet {
 
-    private UsersDao usersDao = new UsersDaoImpl();
-    private PasswordHashService passwordHashService = new PasswordHashServiceImpl();
-    private SignUpService signUpService = new SignUpServiceImpl(usersDao, passwordHashService);
+    private static UsersDao usersDao = new UsersDaoImpl();
+    private static PasswordHashService passwordHashService = new PasswordHashServiceImpl();
+    private static SignUpService signUpService = new SignUpServiceImpl(usersDao, passwordHashService);
 
-    private static final BigDecimal INITIAL_REPUTATION = new BigDecimal(1.0);
+    private static final BigDecimal INITIAL_REPUTATION = BigDecimal.valueOf(1.0);
 
     private static final DateTimeFormatter dateFormatter
             = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -42,7 +42,7 @@ public class SignUpController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException, IOException {
+            throws IOException {
 
         String email = req.getParameter("email");
         String passwordStr = req.getParameter("password"); //TODO: How do we get is as char[] array?
@@ -55,10 +55,6 @@ public class SignUpController extends HttpServlet {
         password.append(passwordStr.toCharArray());
 
         LocalDate birthDate = LocalDate.parse(birthDateStr, dateFormatter);
-        if (signUpService.userExists(email)) {
-            resp.sendRedirect("/signup?error=1");
-            return;
-        }
 
         signUpService.signUp(email, password, name, birthDate, phone, address,
                 UserRole.CLIENT, INITIAL_REPUTATION);
