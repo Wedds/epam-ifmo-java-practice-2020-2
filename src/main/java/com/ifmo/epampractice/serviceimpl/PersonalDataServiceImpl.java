@@ -1,5 +1,6 @@
 package com.ifmo.epampractice.serviceimpl;
 
+import com.ifmo.epampractice.dao.DrivingLicenseDao;
 import com.ifmo.epampractice.dao.PassportDao;
 import com.ifmo.epampractice.dao.UsersDao;
 import com.ifmo.epampractice.entity.DrivingLicenseEntity;
@@ -15,11 +16,13 @@ public class PersonalDataServiceImpl implements PersonalDataService {
 
     private UsersDao usersDao;
     private PassportDao passportDao;
+    private DrivingLicenseDao drivingLicenseDao;
     private PasswordHashService passwordHashService;
 
     public PersonalDataServiceImpl(UsersDao usersDao, PassportDao passportDao, PasswordHashService passwordHashService){
         this.usersDao = usersDao;
         this.passportDao = passportDao;
+        this.drivingLicenseDao = drivingLicenseDao;
         this.passwordHashService = passwordHashService;
     }
 
@@ -39,6 +42,40 @@ public class PersonalDataServiceImpl implements PersonalDataService {
         }
 
 
+    }
+
+    @Override
+    public DrivingLicenseEntity changeDrivingLicence(int userId, LocalDate issueDate, LocalDate expirationDate,
+                                                     String serialNumber) {
+
+        UsersEntity usersEntity = usersDao.get(userId);
+        DrivingLicenseEntity drivingLicenseEntity = drivingLicenseDao.get(usersEntity.getDrivingLicenseId());
+        if (usersEntity == null){
+            throw new RuntimeException();
+        }
+        if (drivingLicenseEntity == null){
+            return createDrivingLicense(usersEntity, issueDate, expirationDate, serialNumber);
+        }
+        else {
+            return updateDrivingLicense(drivingLicenseEntity, issueDate, expirationDate, serialNumber);
+        }
+        //need method to validate data
+        //return drivingLicenceEntity
+    }
+
+    @Override
+    public UsersEntity changeUserData(int id, String email, SecureString password, String name,
+                                      String contactPhone, String address) {
+        UsersEntity usersEntity = usersDao.get(id);
+        validateUserData(email, password, name, contactPhone, address);
+        usersEntity.setEmail(email);
+        String passwordHash = passwordHashService.getHash(password);
+        usersEntity.setPasswordHash(passwordHash);
+        usersEntity.setName(name);
+        usersEntity.setContactPhone(contactPhone);
+        usersEntity.setAddress(address);
+        usersDao.update(usersEntity);
+        return usersEntity;
     }
 
     private PassportEntity createPassport(UsersEntity usersEntity, String issueCountry, String issuer, LocalDate issueDate,
@@ -64,30 +101,29 @@ public class PersonalDataServiceImpl implements PersonalDataService {
         passportDao.update(passportEntity);
         return passportEntity;
     }
-    @Override
-    public DrivingLicenseEntity changeDrivingLicence(int userId, LocalDate issueDate, LocalDate expirationDate,
-                                                     String serialNumber) {
-        //here will be two methods to create drivingLicenseEntity and to update it
-        //need method to get drivingLicenseEntity by serial number in Dao
-        //need method to validate data
-        //return drivingLicenceEntity
-        return null;
+
+    private DrivingLicenseEntity createDrivingLicense(UsersEntity usersEntity, LocalDate issueDate,
+                                                      LocalDate expirationDate, String serialNumber){
+        validateDrivingLicense(issueDate, expirationDate, serialNumber);
+        DrivingLicenseEntity drivingLicenseEntity = new DrivingLicenseEntity(0, issueDate, expirationDate,
+                serialNumber);
+        drivingLicenseDao.save(drivingLicenseEntity);
+        drivingLicenseEntity = drivingLicenseDao.getBySerialNumber(drivingLicenseEntity.getSerialNumber());
+        usersEntity.setDrivingLicenseId(drivingLicenseEntity.getId());
+        usersDao.update(usersEntity);
+        return drivingLicenseEntity;
     }
 
-    @Override
-    public UsersEntity changeUserData(int id, String email, SecureString password, String name,
-                                      String contactPhone, String address) {
-        UsersEntity usersEntity = usersDao.get(id);
-        validateUserData(email, password, name, contactPhone, address);
-        usersEntity.setEmail(email);
-        String passwordHash = passwordHashService.getHash(password);
-        usersEntity.setPasswordHash(passwordHash);
-        usersEntity.setName(name);
-        usersEntity.setContactPhone(contactPhone);
-        usersEntity.setAddress(address);
-        usersDao.update(usersEntity);
-        return usersEntity;
+    private DrivingLicenseEntity updateDrivingLicense (DrivingLicenseEntity drivingLicenseEntity, LocalDate issueDate,
+                                                       LocalDate expirationDate, String serialNumber){
+        validateDrivingLicense(issueDate, expirationDate, serialNumber);
+        drivingLicenseEntity.setIssueDate(issueDate);
+        drivingLicenseEntity.setExpirationDate(expirationDate);
+        drivingLicenseEntity.setSerialNumber(serialNumber);
+        drivingLicenseDao.update(drivingLicenseEntity);
+        return drivingLicenseEntity;
     }
+
 
     private static final String PHONE_REGEX = "[\\d\\s\\(\\)\\+]+";
 
@@ -120,6 +156,18 @@ public class PersonalDataServiceImpl implements PersonalDataService {
         if (issuer == null || issuer.length() == 0) {
             throw new RuntimeException("Issuer is not specified.");
         }
+        if (issueDate == null) {
+            throw new RuntimeException("IssueDate date is not specified.");
+        }
+        if (expirationDate == null) {
+            throw new RuntimeException("ExpirationDate date is not specified.");
+        }
+        if (serialNumber == null || serialNumber.length() == 0) {
+            throw new RuntimeException("SerialNumber number is not specified.");
+        }
+    }
+
+    private void  validateDrivingLicense(LocalDate issueDate, LocalDate expirationDate, String serialNumber){
         if (issueDate == null) {
             throw new RuntimeException("IssueDate date is not specified.");
         }
