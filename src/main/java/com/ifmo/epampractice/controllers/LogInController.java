@@ -18,7 +18,7 @@ import java.io.IOException;
 
 @WebServlet(name = "LogInController", urlPatterns = "/login")
 public class LogInController extends HttpServlet {
-    private LogInService logInService = new LogInServiceImpl();
+    private static LogInService logInService = new LogInServiceImpl();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
