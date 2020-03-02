@@ -39,7 +39,7 @@ public class LogInController extends HttpServlet {
         password.append(passwordStr.toCharArray());
 
         if (!logInService.getAuth(email, password)) {
-            resp.sendRedirect("/login?error=1");
+            resp.sendRedirect(req.getContextPath() + "/login?error=1");
             return;
         }
         UsersDao usersDao = new UsersDaoImpl();
@@ -59,7 +59,7 @@ public class LogInController extends HttpServlet {
             default:
                 resp.sendRedirect("/login?error=1");
         }
-        resp.sendRedirect(url+ "?id=" + usersEntity.getId());
+        resp.sendRedirect(req.getContextPath() + url + "?id=" + usersEntity.getId());
     }
 }
 
