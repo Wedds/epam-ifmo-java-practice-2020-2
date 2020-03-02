@@ -42,12 +42,24 @@ public class LogInController extends HttpServlet {
             resp.sendRedirect("/login?error=1");
             return;
         }
-        HttpSession session = req.getSession();
-        session.setAttribute("name", email);
-
         UsersDao usersDao = new UsersDaoImpl();
         UsersEntity usersEntity = usersDao.getByEmail(email);
-        resp.sendRedirect("/login?id=" + usersEntity.getId());
+
+        HttpSession session = req.getSession();
+        session.setAttribute("id", usersEntity.getId());
+
+        String url = "";
+        switch (usersEntity.getRole()) {
+            case ADMIN:
+                url = "/admin";
+                break;
+            case CLIENT:
+                url = "/client";
+                break;
+            default:
+                resp.sendRedirect("/login?error=1");
+        }
+        resp.sendRedirect(url+ "?id=" + usersEntity.getId());
     }
 }
 

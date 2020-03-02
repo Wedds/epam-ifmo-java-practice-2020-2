@@ -54,6 +54,9 @@
                     <span>Пароль:</span>
                     <input type="password" name="password" required placeholder="*****"/>
                 </div>
+                <%if (("1").equals(request.getParameter("error"))) { %>
+                <div class="text-danger"> Неправильный логин или пароль </div>
+                <%}%>
                 <div style="text-align: center; margin-top: 20px;">
                     <input class="btn btn-secondary" type="submit" value="ВОЙТИ"/>
                 </div>
