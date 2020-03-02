@@ -24,7 +24,7 @@ public class SignUpServiceImpl implements SignUpService {
     @Override
     public UsersEntity signUp(String email, SecureString password, String name,
                               LocalDate birthDate, String phone, String address,
-                              UserRole role, BigDecimal reputation) throws SignUpException {
+                              UserRole role, BigDecimal reputation) {
         validateInput(email, password, name, birthDate, phone, address);
         if (userExists(email)) {
             throw new SignUpException("User with the same email already exists.");
@@ -40,14 +40,14 @@ public class SignUpServiceImpl implements SignUpService {
         return usersDao.getByEmail(email);
     }
 
-    private boolean userExists(String email) {
+    public boolean userExists(String email) {
         return usersDao.getByEmail(email) != null;
     }
 
     private static final String PHONE_REGEX = "[\\d\\s\\(\\)\\+]+";
 
     private void validateInput(String email, SecureString password, String name, LocalDate birthDate,
-                               String phone, String address) throws SignUpException {
+                               String phone, String address) {
         if (email == null || email.length() == 0) {
             throw new SignUpException("Email not specified.");
         }
