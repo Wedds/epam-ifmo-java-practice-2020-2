@@ -19,4 +19,8 @@ public interface InvoiceDao extends BasicDaoInterface<InvoiceEntity> {
 
     @Override
     void save(InvoiceEntity entity);
+
+    List<InvoiceEntity> getAllByUserId(int userId);
+
+    InvoiceEntity getByOrderId(int orderId);
 }

@@ -9,7 +9,9 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 public interface SignUpService {
+    boolean userExists(String email);
+
     UsersEntity signUp(String email, SecureString password, String name,
                        LocalDate birthDate, String phone, String address,
-                       UserRole role, BigDecimal reputation) throws SignUpException;
+                       UserRole role, BigDecimal reputation);
 }
