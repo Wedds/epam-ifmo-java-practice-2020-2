@@ -10,8 +10,8 @@ import org.apache.logging.log4j.Logger;
 
 import java.math.BigDecimal;
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class InvoiceDaoImpl implements InvoiceDao {
@@ -139,8 +139,8 @@ public class InvoiceDaoImpl implements InvoiceDao {
     private InvoiceEntity parseRow(ResultSet resultSet) throws SQLException {
         int id = resultSet.getInt("id");
         int orderId = resultSet.getInt("order_id");
-        Date issueDate = resultSet.getDate("issue_date");
-        Date paymentDate = resultSet.getDate("payment_date");
+        LocalDate issueDate = resultSet.getDate("issue_date").toLocalDate();
+        LocalDate paymentDate = resultSet.getDate("payment_date").toLocalDate();
         BigDecimal totalPrice = resultSet.getBigDecimal("total_price");
         String statusString = resultSet.getString("status").toUpperCase();
         InvoiceStatus status = InvoiceStatus.valueOf(statusString);
@@ -151,8 +151,8 @@ public class InvoiceDaoImpl implements InvoiceDao {
     private void setInvoiceFieldsToStatement(InvoiceEntity invoice, PreparedStatement statement)
             throws SQLException {
         statement.setInt(1, invoice.getOrderId());
-        statement.setDate(2, new java.sql.Date(invoice.getIssueDate().getTime()));
-        statement.setDate(3, new java.sql.Date(invoice.getPaymentDate().getTime()));
+        statement.setDate(2, Date.valueOf(invoice.getIssueDate()));
+        statement.setDate(3, Date.valueOf(invoice.getPaymentDate()));
         statement.setBigDecimal(4, invoice.getTotalPrice());
         statement.setString(5, invoice.getStatus().name().toLowerCase());
     }

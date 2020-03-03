@@ -12,6 +12,8 @@ public interface CarDamageDao extends BasicDaoInterface<CarDamageEntity> {
     @Override
     CarDamageEntity get(int id);
 
+    public CarDamageEntity getByOrderId(int orderId);
+
     @Override
     void update(CarDamageEntity carDamageEntity);
 

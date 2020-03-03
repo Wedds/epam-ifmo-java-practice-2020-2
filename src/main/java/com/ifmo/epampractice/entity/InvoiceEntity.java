@@ -3,21 +3,21 @@ package com.ifmo.epampractice.entity;
 import com.ifmo.epampractice.enums.InvoiceStatus;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.Objects;
 
 public class InvoiceEntity {
     private int id;
     private int orderId;
-    private Date issueDate;
-    private Date paymentDate;
+    private LocalDate issueDate;
+    private LocalDate paymentDate;
     private BigDecimal totalPrice;
     private InvoiceStatus status;
 
     public InvoiceEntity() {
     }
 
-    public InvoiceEntity(int id, int orderId, Date issueDate, Date paymentDate, BigDecimal totalPrice, InvoiceStatus status) {
+    public InvoiceEntity(int id, int orderId, LocalDate issueDate, LocalDate paymentDate, BigDecimal totalPrice, InvoiceStatus status) {
         this.id = id;
         this.orderId = orderId;
         this.issueDate = issueDate;
@@ -64,19 +64,19 @@ public class InvoiceEntity {
         this.orderId = orderId;
     }
 
-    public Date getIssueDate() {
+    public LocalDate getIssueDate() {
         return issueDate;
     }
 
-    public void setIssueDate(Date issueDate) {
+    public void setIssueDate(LocalDate issueDate) {
         this.issueDate = issueDate;
     }
 
-    public Date getPaymentDate() {
+    public LocalDate getPaymentDate() {
         return paymentDate;
     }
 
-    public void setPaymentDate(Date paymentDate) {
+    public void setPaymentDate(LocalDate paymentDate) {
         this.paymentDate = paymentDate;
     }
 
